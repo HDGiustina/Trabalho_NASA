@@ -9,6 +9,8 @@ package Model;
  * @author User
  */
 public class Asteroide {
+
+    private Integer id;
     private String nome;
     private Float distanciaDaTerra;
     private Boolean potencialRisco;
@@ -16,6 +18,15 @@ public class Asteroide {
     private Float tamanhoDoAsteroide;
 
     public Asteroide(String nome, Float distanciaDaTerra, Boolean potencialRisco, Float velocidadeKmHr, Float tamanhoDoAsteroide) {
+        this.nome = nome;
+        this.distanciaDaTerra = distanciaDaTerra;
+        this.potencialRisco = potencialRisco;
+        this.velocidadeKmHr = velocidadeKmHr;
+        this.tamanhoDoAsteroide = tamanhoDoAsteroide;
+    }
+
+    public Asteroide(Integer id, String nome, Float distanciaDaTerra, Boolean potencialRisco, Float velocidadeKmHr, Float tamanhoDoAsteroide) {
+        this.id = id;
         this.nome = nome;
         this.distanciaDaTerra = distanciaDaTerra;
         this.potencialRisco = potencialRisco;
@@ -62,7 +73,5 @@ public class Asteroide {
     public void setTamanhoDoAsteroide(Float tamanhoDoAsteroide) {
         this.tamanhoDoAsteroide = tamanhoDoAsteroide;
     }
-    
-    
-    
+
 }
