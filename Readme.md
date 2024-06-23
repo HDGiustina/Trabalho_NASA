@@ -9,3 +9,14 @@ CREATE TABLE Asteroides (
     velocidadeKmHr FLOAT NOT NULL,
     tamanhoDoAsteroide FLOAT NOT NULL
 );
+
+CREATE TABLE opcoesDeOrdenacao (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ordenacao VARCHAR(255) NOT NULL
+);
+
+INSERT INTO opcoesDeOrdenacao (ordenacao) VALUES
+('distanciaDaTerra'),
+('potencialRisco'),
+('velocidadeKmHr'),
+('tamanhoDoAsteroide');

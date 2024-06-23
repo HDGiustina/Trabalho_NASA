@@ -25,7 +25,7 @@ public class AsteroideDAO {
      *
      * @param asteroide cadastrar asteroide
      */
-    public void cadastrarAsteroide(Model.Asteroide asteroide) {
+    public void cadastrarAsteroide(Asteroide asteroide) {
         try {
             String sql = "INSERT INTO Asteroides (nome, distanciaDaTerra, potencialRisco, velocidadeKmHr, tamanhoDoAsteroide)"
                     + "VALUES (?, ?, ?, ?, ?)";
