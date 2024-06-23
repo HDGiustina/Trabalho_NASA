@@ -33,8 +33,8 @@ public class BdConexao {
             Logger.getLogger(BdConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public Connection getConnection(){
+
+    public Connection getConnection() {
         return conexao;
     }
 }

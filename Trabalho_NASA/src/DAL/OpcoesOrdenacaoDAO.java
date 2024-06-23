@@ -4,10 +4,45 @@
  */
 package DAL;
 
+import Bd.BdConexao;
+import Model.OpcoesOrdenacao;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author User
  */
 public class OpcoesOrdenacaoDAO {
-    
+
+    private BdConexao conn = new BdConexao();
+
+    public ArrayList<OpcoesOrdenacao> consultarTodasOrdenacoesPossiveis() {
+        ArrayList<OpcoesOrdenacao> lstDeOpcoes = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM opcoesDeOrdenacao";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                OpcoesOrdenacao opcao = new OpcoesOrdenacao(
+                        rs.getInt("id")
+                        , rs.getString("ordenacao"));
+                
+                lstDeOpcoes.add(opcao);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            conn = null;
+        }
+        return lstDeOpcoes;
+    }
 }

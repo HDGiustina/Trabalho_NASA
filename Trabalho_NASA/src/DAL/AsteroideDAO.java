@@ -41,6 +41,8 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
         }
     }
 
@@ -72,6 +74,8 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
         }
         return lstAsteroides;
     }

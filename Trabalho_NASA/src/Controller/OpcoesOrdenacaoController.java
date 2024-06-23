@@ -4,10 +4,20 @@
  */
 package Controller;
 
+import Model.OpcoesOrdenacao;
+import DAL.OpcoesOrdenacaoDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author User
  */
 public class OpcoesOrdenacaoController {
-    
+
+    private OpcoesOrdenacaoDAO opcoesOrdenacao = new OpcoesOrdenacaoDAO();
+
+    public ArrayList<OpcoesOrdenacao> getOpcoesDeOrdenacao() {
+        return opcoesOrdenacao.consultarTodasOrdenacoesPossiveis();
+    }
+
 }
