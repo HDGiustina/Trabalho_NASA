@@ -41,6 +41,8 @@ public class BarChartPanel extends JPanel {
         
         // Criar o painel de gráfico e adicionar ao JPanel
         ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(400,300));
+   
         this.setLayout(new BorderLayout());
         this.add(chartPanel, BorderLayout.CENTER);
     }
