@@ -2,14 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/Controller/OpcoesOrdenacaoController.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/Model/OpcoesOrdenacao.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/Model/Asteroide.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/DAL/OpcoesOrdenacaoDAO.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/Controller/AsteroideController.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/Bd/BdConexao.java</file>
-            <file>file:/C:/Users/User/Desktop/Trabalho_NASA/Trabalho_NASA/src/DAL/AsteroideDAO.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

@@ -9,6 +9,7 @@ import Model.Asteroide;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,28 +22,47 @@ public class AsteroideDAO {
 
     private BdConexao conn = new BdConexao();
 
-    /**
-     *
-     * @param asteroide cadastrar asteroide
-     */
-    public void cadastrarAsteroide(Asteroide asteroide) {
-        try {
-            String sql = "INSERT INTO Asteroides (nome, distanciaDaTerra, potencialRisco, velocidadeKmHr, tamanhoDoAsteroide)"
-                    + "VALUES (?, ?, ?, ?, ?)";
+    // Itera sobre cada Asteroide da ArrayList, inserindo no banco
+    public void insertLstAsteroides(ArrayList<Asteroide> lstAsteroides) {
+        for (int i = 0; i < lstAsteroides.size(); i++) {
+            Asteroide temp = lstAsteroides.get(i);
+            insertAsteroide(temp);
+        }
+    }
+    
+    // Insere um objeto Asteroide no banco de dados
+    public void insertAsteroide(Asteroide ast) {
+        String insertQuery = "INSERT INTO Asteroides (date, id, id_neo_referencia, nome, data_aproximacao_maxima, " +
+                "velocidade_relativa_em_kms, distancia_min_da_terra_em_km, diametro_estimado_em_km, corpo_orbitante, " +
+                "potencialmente_perigoso, nivel_ameaca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+         // Prepara a String de consulta
+        try (PreparedStatement stmt = conn.getConnection().prepareStatement(insertQuery)) {
+            
+            stmt.setString(1, ast.getDate().toString());                    // Data da consulta
+            stmt.setString(2, ast.getId());                                 // id
+            stmt.setString(3, ast.getId_neo_referencia());                  // id_neo_referencia
+            stmt.setString(4, ast.getNome());                               // nome
+            stmt.setString(5, ast.getData_aproximacao_maxima().toString()); // data_aproximacao_maxima
+            stmt.setDouble(6, ast.getVelocidade_relativa_em_kms());         // velocidade_relativa_em_kms
+            stmt.setDouble(7, ast.getDistancia_min_da_terra_em_km());       // distancia_min_da_terra_em_km
+            stmt.setDouble(8, ast.getDiametro_estimado_em_km());            // diametro_estimado_em_km
+            stmt.setString(9, ast.getCorpo_orbitante());                    // corpo_orbitante
+            stmt.setInt(10, ast.getPotencialmente_perigoso() ? 1 : 0);      // potencialmente_perigoso
+            stmt.setString(11, ast.getNivel_ameaca());                      // nivel_ameaca
 
-            PreparedStatement psmt = conn.getConnection().prepareStatement(sql);
-            psmt.setString(1, asteroide.getNome());
-            psmt.setFloat(2, asteroide.getDistanciaDaTerra());
-            psmt.setBoolean(3, asteroide.getPotencialRisco());
-            psmt.setFloat(4, asteroide.getVelocidadeKmHr());
-            psmt.setFloat(5, asteroide.getTamanhoDoAsteroide());
-            psmt.executeUpdate();
+            try {
+                // Executa o Insert
+                stmt.executeUpdate();
+                System.out.println("Data: " + ast.getDate().toString() + ", ID: " + ast.getId() + ", Inserido com sucesso!");
+
+            } catch (java.sql.SQLIntegrityConstraintViolationException e) {
+                // Se o ID já está na base, ignora o erro de duplicidade gerado pelo MariaDB
+                System.out.println("Erro de duplicidade ignorado com sucesso! " + e.getMessage());
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            conn = null;
         }
     }
 
@@ -61,13 +81,19 @@ public class AsteroideDAO {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                Asteroide asteroide = new Asteroide(rs.getInt("id"),
-                        rs.getString("nome"),
-                        rs.getFloat("distanciaDaTerra"),
-                        rs.getBoolean("potencialRisco"),
-                        rs.getFloat("velocidadeKmHr"),
-                        rs.getFloat("tamanhoDoAsteroide"));
-                lstAsteroides.add(asteroide);
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));                             // Data consultada
+                ast.setId(rs.getString("id"));                             // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+                
+                lstAsteroides.add(ast);
             }
 
         } catch (SQLException ex) {
