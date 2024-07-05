@@ -4,17 +4,21 @@
  */
 package view;
 
+import Controller.*;
 /**
  *
  * @author m131548
  */
 public class FrmHome extends javax.swing.JFrame {
 
+    private final MenuController menu;
+    
     /**
      * Creates new form FrmHome
      */
     public FrmHome() {
         initComponents();
+        menu = new MenuController(this);
     }
 
     /**
@@ -37,16 +41,16 @@ public class FrmHome extends javax.swing.JFrame {
         panelGrafico = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem6 = new javax.swing.JMenuItem();
+        menuArquivo = new javax.swing.JMenu();
+        menuDashboard = new javax.swing.JMenuItem();
+        menuSair = new javax.swing.JMenuItem();
+        menuDados = new javax.swing.JMenu();
+        menuAtualizar = new javax.swing.JMenuItem();
+        menuResultados = new javax.swing.JMenuItem();
+        menuConfiguracaoPai = new javax.swing.JMenu();
+        menuConfiguracao = new javax.swing.JMenuItem();
+        menuAjuda = new javax.swing.JMenu();
+        menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,49 +130,69 @@ public class FrmHome extends javax.swing.JFrame {
 
         jLabel3.setText("Horário:");
 
-        jMenu1.setText("Arquivo");
+        menuArquivo.setText("Arquivo");
 
-        jMenuItem1.setText("Dashboard");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuDashboard.setText("Dashboard");
+        menuDashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuDashboardActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        menuArquivo.add(menuDashboard);
 
-        jMenuItem2.setText("Sair");
-        jMenu1.add(jMenuItem2);
-
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Dados");
-
-        jMenuItem3.setText("Atualizar dados");
-        jMenu2.add(jMenuItem3);
-
-        jMenuItem4.setText("Resultados");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        menuSair.setText("Sair");
+        menuSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                menuSairActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem4);
+        menuArquivo.add(menuSair);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuArquivo);
 
-        jMenu3.setText("Configurações");
+        menuDados.setText("Dados");
 
-        jMenuItem5.setText("Preferências");
-        jMenu3.add(jMenuItem5);
+        menuAtualizar.setText("Atualizar dados");
+        menuAtualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAtualizarActionPerformed(evt);
+            }
+        });
+        menuDados.add(menuAtualizar);
 
-        jMenuBar1.add(jMenu3);
+        menuResultados.setText("Resultados");
+        menuResultados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuResultadosActionPerformed(evt);
+            }
+        });
+        menuDados.add(menuResultados);
 
-        jMenu4.setText("Ajuda");
+        jMenuBar1.add(menuDados);
 
-        jMenuItem6.setText("Sobre");
-        jMenu4.add(jMenuItem6);
+        menuConfiguracaoPai.setText("Configurações");
 
-        jMenuBar1.add(jMenu4);
+        menuConfiguracao.setText("Configurações");
+        menuConfiguracao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuConfiguracaoActionPerformed(evt);
+            }
+        });
+        menuConfiguracaoPai.add(menuConfiguracao);
+
+        jMenuBar1.add(menuConfiguracaoPai);
+
+        menuAjuda.setText("Ajuda");
+
+        menuSobre.setText("Sobre");
+        menuSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSobreActionPerformed(evt);
+            }
+        });
+        menuAjuda.add(menuSobre);
+
+        jMenuBar1.add(menuAjuda);
 
         setJMenuBar(jMenuBar1);
 
@@ -211,13 +235,29 @@ public class FrmHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void menuDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDashboardActionPerformed
+        menu.telaAtualiza(this);
+    }//GEN-LAST:event_menuDashboardActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void menuResultadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuResultadosActionPerformed
+        menu.telaAtualiza(new FrmResultados());
+    }//GEN-LAST:event_menuResultadosActionPerformed
+
+    private void menuConfiguracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuConfiguracaoActionPerformed
+        menu.telaAtualiza(new FrmConfiguracao());
+    }//GEN-LAST:event_menuConfiguracaoActionPerformed
+
+    private void menuAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAtualizarActionPerformed
+        menu.telaAtualiza(new FrmAtualizar());
+    }//GEN-LAST:event_menuAtualizarActionPerformed
+
+    private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
+        menu.telaAtualiza(new FrmSobre());
+    }//GEN-LAST:event_menuSobreActionPerformed
+
+    private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
+        menu.Sair();
+    }//GEN-LAST:event_menuSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -261,20 +301,20 @@ public class FrmHome extends javax.swing.JFrame {
     private java.awt.Label contadorText;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private java.awt.Label label1;
+    private javax.swing.JMenu menuAjuda;
+    private javax.swing.JMenu menuArquivo;
+    private javax.swing.JMenuItem menuAtualizar;
+    private javax.swing.JMenuItem menuConfiguracao;
+    private javax.swing.JMenu menuConfiguracaoPai;
+    private javax.swing.JMenu menuDados;
+    private javax.swing.JMenuItem menuDashboard;
+    private javax.swing.JMenuItem menuResultados;
+    private javax.swing.JMenuItem menuSair;
+    private javax.swing.JMenuItem menuSobre;
     private javax.swing.JPanel panelGrafico;
     // End of variables declaration//GEN-END:variables
 }
