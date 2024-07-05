@@ -6,6 +6,8 @@ package Bd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,26 +17,53 @@ import java.util.logging.Logger;
  */
 public class BdConexao {
 
-    private final String driver = "com.mysql.cj.jdbc.Driver";
-    private final String url = "jdbc:mysql://localhost/" + "bancoTrabalhoPa";
-    private final String usuario = "root";
-    private final String senha = "root";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String URL = "jdbc:mysql://localhost/" + "bancoTrabalhoPa";
+    private static final String USUARIO = "root";
+    private static final String SENHA = "";
 
     private Connection conexao;
 
     public BdConexao() {
         try {
-            Class.forName(driver);//carrega o driver
-
+            
             //abre a conexão com os parâmetros informados
-            conexao = DriverManager.getConnection(url, usuario, senha);
+            conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
+          //  Class.forName(DRIVER);//carrega o driver
+            //conexao = DriverManager.getConnection(URL, USUARIO, SENHA);
+            
+            // Cria a tabela no banco, se ainda não existe
+            criaTabelaSeNaoExiste(conexao);
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(BdConexao.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public Connection getConnection() {
         return conexao;
+    }
+    
+    private static void criaTabelaSeNaoExiste(Connection conn) throws SQLException {
+        // Statement para criar a tabela caso não exista ainda
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS Asteroides (" +
+                "date DATE, " +
+                "id VARCHAR(255), " +
+                "id_neo_referencia VARCHAR(255), " +
+                "nome VARCHAR(255), " +
+                "data_aproximacao_maxima DATE, " +
+                "velocidade_relativa_em_kms DOUBLE, " +
+                "distancia_min_da_terra_em_km DOUBLE, " +
+                "diametro_estimado_em_km DOUBLE, " +
+                "corpo_orbitante VARCHAR(255), " +
+                "potencialmente_perigoso BOOL, " +
+                "nivel_ameaca VARCHAR(255), " +
+                "PRIMARY KEY (id, date)" +
+                ");";
+
+        // Executa o statement acima
+        try (PreparedStatement stmt = conn.prepareStatement(createTableQuery)) {
+            stmt.execute();
+        }
     }
 }
