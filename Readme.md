@@ -1,3 +1,6 @@
+Scriptjhonson sql:
+
+
 create database bancoTrabalhoPa;
 use bancoTrabalhoPa;
 
