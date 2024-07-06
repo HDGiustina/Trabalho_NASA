@@ -5,6 +5,11 @@
 package view;
 
 import Controller.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import Model.BarChartPanel;
 
@@ -15,7 +20,7 @@ import Model.BarChartPanel;
 public class FrmHome extends javax.swing.JFrame {
 
     private final MenuController menu;
-    
+
     /**
      * Creates new form FrmHome
      */
@@ -26,6 +31,21 @@ public class FrmHome extends javax.swing.JFrame {
         panelGrafico.setLayout(new java.awt.BorderLayout());
         panelGrafico.add(new BarChartPanel(), java.awt.BorderLayout.CENTER);
         panelGrafico.validate(); // Validar o layout do painel para exibir o gráfico
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Atualizar a data atual
+                Date now = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                DateNowText.setText(dateFormat.format(now));
+
+                // Atualizar o horário atual
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH : mm : ss");
+                HorarioText.setText(timeFormat.format(now));
+            }
+        });
+        timer.start();
+
     }
 
     /**
@@ -37,7 +57,7 @@ public class FrmHome extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        HorarioText = new javax.swing.JLabel();
+        DateNowText = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -47,6 +67,8 @@ public class FrmHome extends javax.swing.JFrame {
         contadorText = new java.awt.Label();
         panelGrafico = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        HorarioText = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuDashboard = new javax.swing.JMenuItem();
@@ -61,8 +83,8 @@ public class FrmHome extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        HorarioText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        HorarioText.setText("00 : 00 : 00");
+        DateNowText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        DateNowText.setText("06/07/2024");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -135,7 +157,12 @@ public class FrmHome extends javax.swing.JFrame {
             .addGap(0, 162, Short.MAX_VALUE)
         );
 
-        jLabel3.setText("Horário:");
+        jLabel3.setText("Data:");
+
+        jLabel4.setText("Horário:");
+
+        HorarioText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        HorarioText.setText("00 : 00 : 00");
 
         menuArquivo.setText("Arquivo");
 
@@ -211,10 +238,15 @@ public class FrmHome extends javax.swing.JFrame {
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(HorarioText)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(DateNowText))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(HorarioText))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,16 +260,20 @@ public class FrmHome extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(HorarioText)
+                            .addComponent(DateNowText)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(HorarioText)
+                            .addComponent(jLabel4))
+                        .addGap(28, 28, 28)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(contadorObjetos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(262, 262, 262)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -303,12 +339,14 @@ public class FrmHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel DateNowText;
     private javax.swing.JLabel HorarioText;
     private javax.swing.JTable ListaAproximacoes;
     private javax.swing.JPanel contadorObjetos;
     private java.awt.Label contadorText;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
