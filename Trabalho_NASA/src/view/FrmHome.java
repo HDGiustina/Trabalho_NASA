@@ -13,6 +13,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import Model.BarChartPanel;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 
 /**
@@ -29,10 +30,11 @@ public class FrmHome extends javax.swing.JFrame {
     public FrmHome() {
         initComponents();
         menu = new MenuController(this);
+        BarChartPanel barChartPanel = new BarChartPanel(new ArrayList<>()); // Inicialmente vazio
+        panelGrafico.setLayout(new BorderLayout());
+        panelGrafico.add(barChartPanel, BorderLayout.CENTER);
+        panelGrafico.validate();
 
-        panelGrafico.setLayout(new java.awt.BorderLayout());
-        panelGrafico.add(new BarChartPanel(), java.awt.BorderLayout.CENTER);
-        panelGrafico.validate(); // Validar o layout do painel para exibir o gráfico
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,18 +51,10 @@ public class FrmHome extends javax.swing.JFrame {
         timer.start();
         AsteroideController asteroideControler = new AsteroideController();
         Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
-        System.out.println(objetosProximoATerra);
-
+        contadorText.setText(objetosProximoATerra.toString());
         ArrayList<AsteroidesPorPeriodo> arrayDeNumeros = new ArrayList<>();
-        arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes("dia");
-
-        for (AsteroidesPorPeriodo asteroidesPorPeriodo : arrayDeNumeros) {
-            // Aqui você pode acessar os atributos ou métodos de cada objeto AsteroidesPorPeriodo
-            // Exemplo de uso: imprimir algum atributo
-            System.out.println("dia: " + asteroidesPorPeriodo.getPeriodo());
-            System.out.println("Número de asteroides: " + asteroidesPorPeriodo.getNumeroPorMes());
-            System.out.println("----------------------------------");
-        }
+        arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes("mes");
+        barChartPanel.atualizarDados(arrayDeNumeros);
 
     }
 
