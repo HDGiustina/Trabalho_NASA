@@ -23,6 +23,8 @@ public class TESTES {
             // Exemplo de consulta na API
             lstAsteroides = controller.consultarAsteroidesAPI(dt_inicio, dt_fim);
             
+            
+           
             // Exemplo de como guardar os dados no banco
             AsteroideDAO DAO = new AsteroideDAO();
             DAO.insertLstAsteroides(lstAsteroides);

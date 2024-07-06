@@ -235,5 +235,26 @@ public class AsteroideDAO {
         }
         return lstAsteroides;
     }
+    
+    public Integer contadorDeAsteroidesProximosATerra(){
+        Integer objetosProximosATerra = 0;
+        try {
+             String sql = "select count(*) as numero from asteroides";
+             PreparedStatement st = conn.getConnection().prepareStatement(sql);
+             ResultSet rs = st.executeQuery();
+             while(rs.next()){
+                 objetosProximosATerra = rs.getInt("numero");
+             }
+             
+             
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
+        }
+       return objetosProximosATerra;
+    }
 
 }

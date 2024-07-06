@@ -45,6 +45,9 @@ public class FrmHome extends javax.swing.JFrame {
             }
         });
         timer.start();
+        AsteroideController asteroideControler = new AsteroideController();
+        Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
+        System.out.println(objetosProximoATerra);
 
     }
 
