@@ -50,17 +50,17 @@ public class FrmHome extends javax.swing.JFrame {
         AsteroideController asteroideControler = new AsteroideController();
         Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
         System.out.println(objetosProximoATerra);
-        
+
         ArrayList<AsteroidesPorPeriodo> arrayDeNumeros = new ArrayList<>();
         arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes();
-        
-       for (AsteroidesPorPeriodo asteroidesPorPeriodo : arrayDeNumeros) {
-    // Aqui você pode acessar os atributos ou métodos de cada objeto AsteroidesPorPeriodo
-    // Exemplo de uso: imprimir algum atributo
-    System.out.println("Mês: " + asteroidesPorPeriodo.getMes());
-    System.out.println("Número de asteroides: " + asteroidesPorPeriodo.getNumeroPorMes());
-    System.out.println("----------------------------------");
-}
+
+        for (AsteroidesPorPeriodo asteroidesPorPeriodo : arrayDeNumeros) {
+            // Aqui você pode acessar os atributos ou métodos de cada objeto AsteroidesPorPeriodo
+            // Exemplo de uso: imprimir algum atributo
+            System.out.println("Mês: " + asteroidesPorPeriodo.getMes());
+            System.out.println("Número de asteroides: " + asteroidesPorPeriodo.getNumeroPorMes());
+            System.out.println("----------------------------------");
+        }
 
     }
 
