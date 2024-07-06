@@ -68,15 +68,13 @@ public class AsteroideDAO {
 
     /**
      *
-     * @param ordenacao opções que poderão vir distância, tamanho do objeto,
-     * velocidade e potencial de risco.
      * @return dados dos asteroides
      */
-    public ArrayList<Asteroide> consultarTodosAsteroides(String ordenacao) {
+    public ArrayList<Asteroide> consultarTodosAsteroides() {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM Asteroides ORDER BY " + ordenacao;
+            String sql = "SELECT * FROM Asteroides";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
@@ -84,6 +82,138 @@ public class AsteroideDAO {
                 Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
                 ast.setDate(LocalDate.parse(rs.getString("date")));                             // Data consultada
                 ast.setId(rs.getString("id"));                             // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+                
+                lstAsteroides.add(ast);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
+        }
+        return lstAsteroides;
+    }
+    
+    /**
+     *
+     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km, potencialmente_perigoso,
+     * velocidade_relativa_em_kms e diametro_estimado_em_km.
+     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms, diametro_estimado_em_km
+     * @param comeco  do filtro
+     * @param fim do filtro
+     * @return dados dos asteroides
+     */
+    public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, Double comeco, Double fim) {
+        ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
+        try {
+
+            String sql = "SELECT * FROM Asteroides WHERE ? BETWEEN ? AND ? ORDER BY ?";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, filtro);
+            st.setDouble(2, comeco);
+            st.setDouble(3, fim);
+            st.setString(4, ordenacao);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));  // Data consultada
+                ast.setId(rs.getString("id")); // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+                
+                lstAsteroides.add(ast);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
+        }
+        return lstAsteroides;
+    }
+    
+    /**
+     * 
+     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms, diametro_estimado_em_km
+     * @param comeco range de começo do filtro
+     * @param fim range de fim do filtro
+     * @return asteroides filtrados conforme queira
+     */
+    public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltro(String filtro, Double comeco, Double fim) {
+        ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
+        try {
+
+            String sql = "SELECT * FROM Asteroides WHERE ? BETWEEN ? AND ?";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, filtro);
+            st.setDouble(2, comeco);
+            st.setDouble(3, fim);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));  // Data consultada
+                ast.setId(rs.getString("id")); // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+                
+                lstAsteroides.add(ast);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            conn = null;
+        }
+        return lstAsteroides;
+    }
+    
+    /**
+     * 
+     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km, potencialmente_perigoso,
+     * velocidade_relativa_em_kms e diametro_estimado_em_km.
+     * @return asteroides ordenados
+     */
+    public ArrayList<Asteroide> consultarTodosAsteroidesPorOrdenacao(String ordenacao) {
+        ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
+        try {
+
+            String sql = "SELECT * FROM Asteroides ORDER BY ?";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, ordenacao);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));  // Data consultada
+                ast.setId(rs.getString("id")); // id
                 ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
                 ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
                 ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms

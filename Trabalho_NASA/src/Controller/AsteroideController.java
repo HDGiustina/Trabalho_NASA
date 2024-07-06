@@ -33,6 +33,14 @@ public class AsteroideController {
     public ArrayList<Asteroide> getAsteroidesFiltroEOrdenacao(String ordenacao, String filtro, Double comeco, Double fim) {
         return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, comeco, fim);
     }
+    
+    public ArrayList<Asteroide> getAsteroidesFiltro(String filtro, Double comeco, Double fim) {
+        return asteroidesDao.consultarTodosAsteroidesPorFiltro(filtro, comeco, fim);
+    }
+    
+    public ArrayList<Asteroide> getAsteroidesOrdenacao(String ordenacao) {
+        return asteroidesDao.consultarTodosAsteroidesPorOrdenacao(ordenacao);
+    }
 
     // Função abaixo consulta todos os asteroides no período informado na API e os retorna como ArrayList<Asteroide>
     public ArrayList<Asteroide> consultarAsteroidesAPI(LocalDate dataInicio, LocalDate dataFinal) throws IOException, InterruptedException, SQLException {
