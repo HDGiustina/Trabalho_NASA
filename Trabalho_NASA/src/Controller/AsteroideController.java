@@ -26,8 +26,12 @@ public class AsteroideController {
 
     private AsteroideDAO asteroidesDao = new AsteroideDAO();
 
-    public ArrayList<Asteroide> getAsteroides(String ordenacaoDesejada) {
-        return asteroidesDao.consultarTodosAsteroides(ordenacaoDesejada);
+    public ArrayList<Asteroide> getAsteroides() {
+        return asteroidesDao.consultarTodosAsteroides();
+    }
+    
+    public ArrayList<Asteroide> getAsteroidesFiltroEOrdenacao(String ordenacao, String filtro, Double comeco, Double fim) {
+        return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, comeco, fim);
     }
 
     // Função abaixo consulta todos os asteroides no período informado na API e os retorna como ArrayList<Asteroide>
