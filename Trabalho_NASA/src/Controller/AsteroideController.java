@@ -6,6 +6,7 @@ package Controller;
 
 import Model.Asteroide;
 import DAL.AsteroideDAO;
+import Model.AsteroidesPorPeriodo;
 import java.util.ArrayList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -44,6 +45,10 @@ public class AsteroideController {
     
     public Integer getNumeroAsteroidesProximosATerra(){
         return asteroidesDao.contadorDeAsteroidesProximosATerra();
+    }
+    
+    public ArrayList<AsteroidesPorPeriodo> getNumeroAsteroidesProximosATerraPorMes(){
+        return asteroidesDao.contadorDeAsteroidesProximosATerraPorPeriodo();
     }
 
     // Função abaixo consulta todos os asteroides no período informado na API e os retorna como ArrayList<Asteroide>

@@ -5,7 +5,7 @@
 package DAL;
 
 import Bd.BdConexao;
-import Model.Asteroide;
+import Model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,16 +29,16 @@ public class AsteroideDAO {
             insertAsteroide(temp);
         }
     }
-    
+
     // Insere um objeto Asteroide no banco de dados
     public void insertAsteroide(Asteroide ast) {
-        String insertQuery = "INSERT INTO Asteroides (date, id, id_neo_referencia, nome, data_aproximacao_maxima, " +
-                "velocidade_relativa_em_kms, distancia_min_da_terra_em_km, diametro_estimado_em_km, corpo_orbitante, " +
-                "potencialmente_perigoso, nivel_ameaca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-         // Prepara a String de consulta
+        String insertQuery = "INSERT INTO Asteroides (date, id, id_neo_referencia, nome, data_aproximacao_maxima, "
+                + "velocidade_relativa_em_kms, distancia_min_da_terra_em_km, diametro_estimado_em_km, corpo_orbitante, "
+                + "potencialmente_perigoso, nivel_ameaca) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Prepara a String de consulta
         try (PreparedStatement stmt = conn.getConnection().prepareStatement(insertQuery)) {
-            
+
             stmt.setString(1, ast.getDate().toString());                    // Data da consulta
             stmt.setString(2, ast.getId());                                 // id
             stmt.setString(3, ast.getId_neo_referencia());                  // id_neo_referencia
@@ -60,7 +60,7 @@ public class AsteroideDAO {
                 // Se o ID já está na base, ignora o erro de duplicidade gerado pelo MariaDB
                 System.out.println("Erro de duplicidade ignorado com sucesso! " + e.getMessage());
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -90,7 +90,7 @@ public class AsteroideDAO {
                 ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
                 ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
                 ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
-                
+
                 lstAsteroides.add(ast);
             }
 
@@ -98,18 +98,20 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conn = null;
         }
         return lstAsteroides;
     }
-    
+
     /**
      *
-     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km, potencialmente_perigoso,
-     * velocidade_relativa_em_kms e diametro_estimado_em_km.
-     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms, diametro_estimado_em_km
-     * @param comeco  do filtro
+     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km,
+     * potencialmente_perigoso, velocidade_relativa_em_kms e
+     * diametro_estimado_em_km.
+     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms,
+     * diametro_estimado_em_km
+     * @param comeco do filtro
      * @param fim do filtro
      * @return dados dos asteroides
      */
@@ -137,7 +139,7 @@ public class AsteroideDAO {
                 ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
                 ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
                 ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
-                
+
                 lstAsteroides.add(ast);
             }
 
@@ -145,15 +147,16 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conn = null;
         }
         return lstAsteroides;
     }
-    
+
     /**
-     * 
-     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms, diametro_estimado_em_km
+     *
+     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms,
+     * diametro_estimado_em_km
      * @param comeco range de começo do filtro
      * @param fim range de fim do filtro
      * @return asteroides filtrados conforme queira
@@ -181,7 +184,7 @@ public class AsteroideDAO {
                 ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
                 ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
                 ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
-                
+
                 lstAsteroides.add(ast);
             }
 
@@ -189,16 +192,17 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conn = null;
         }
         return lstAsteroides;
     }
-    
+
     /**
-     * 
-     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km, potencialmente_perigoso,
-     * velocidade_relativa_em_kms e diametro_estimado_em_km.
+     *
+     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km,
+     * potencialmente_perigoso, velocidade_relativa_em_kms e
+     * diametro_estimado_em_km.
      * @return asteroides ordenados
      */
     public ArrayList<Asteroide> consultarTodosAsteroidesPorOrdenacao(String ordenacao) {
@@ -222,7 +226,7 @@ public class AsteroideDAO {
                 ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
                 ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
                 ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
-                
+
                 lstAsteroides.add(ast);
             }
 
@@ -230,31 +234,61 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             conn = null;
         }
         return lstAsteroides;
     }
-    
-    public Integer contadorDeAsteroidesProximosATerra(){
+
+    public Integer contadorDeAsteroidesProximosATerra() {
         Integer objetosProximosATerra = 0;
         try {
-             String sql = "select count(*) as numero from asteroides";
-             PreparedStatement st = conn.getConnection().prepareStatement(sql);
-             ResultSet rs = st.executeQuery();
-             while(rs.next()){
-                 objetosProximosATerra = rs.getInt("numero");
-             }
-             
-             
+            String sql = "select count(*) as numero from asteroides";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                objetosProximosATerra = rs.getInt("numero");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            conn = null;
         }
-       return objetosProximosATerra;
+        return objetosProximosATerra;
+    }
+
+    public ArrayList<AsteroidesPorPeriodo> contadorDeAsteroidesProximosATerraPorPeriodo() {
+        ArrayList<AsteroidesPorPeriodo> asteroidesPorPeriodo = new ArrayList<>();
+        try {
+            String sql = "SELECT \n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m') AS mes,\n"
+                    + "    COUNT(*) AS total_itens\n"
+                    + "FROM \n"
+                    + "    bancotrabalhopa.asteroides\n"
+                    + "WHERE \n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m') BETWEEN \n"
+                    + "    DATE_FORMAT((SELECT MIN(data_aproximacao_maxima) FROM bancotrabalhopa.asteroides), '%Y-%m') AND \n"
+                    + "    DATE_FORMAT(CURDATE(), '%Y-%m')\n"
+                    + "GROUP BY \n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m')\n"
+                    + "ORDER BY \n"
+                    + "    mes;";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+               AsteroidesPorPeriodo ateroidesPorPeriodo = new AsteroidesPorPeriodo(
+                       rs.getString("mes"),
+                       rs.getInt("total_itens")
+               );
+      
+                asteroidesPorPeriodo.add(ateroidesPorPeriodo);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return asteroidesPorPeriodo;
     }
 
 }

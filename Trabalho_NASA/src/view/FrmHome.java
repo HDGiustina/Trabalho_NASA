@@ -5,6 +5,7 @@
 package view;
 
 import Controller.*;
+import Model.AsteroidesPorPeriodo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import Model.BarChartPanel;
+import java.util.ArrayList;
 
 /**
  *
@@ -48,6 +50,17 @@ public class FrmHome extends javax.swing.JFrame {
         AsteroideController asteroideControler = new AsteroideController();
         Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
         System.out.println(objetosProximoATerra);
+        
+        ArrayList<AsteroidesPorPeriodo> arrayDeNumeros = new ArrayList<>();
+        arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes();
+        
+       for (AsteroidesPorPeriodo asteroidesPorPeriodo : arrayDeNumeros) {
+    // Aqui você pode acessar os atributos ou métodos de cada objeto AsteroidesPorPeriodo
+    // Exemplo de uso: imprimir algum atributo
+    System.out.println("Mês: " + asteroidesPorPeriodo.getMes());
+    System.out.println("Número de asteroides: " + asteroidesPorPeriodo.getNumeroPorMes());
+    System.out.println("----------------------------------");
+}
 
     }
 

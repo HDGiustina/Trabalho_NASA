@@ -11,10 +11,12 @@ import java.time.LocalDate;
  * @author User
  */
 public class Asteroide {
-    LocalDate date, data_aproximacao_maxima;
-    String id, id_neo_referencia, nome, corpo_orbitante, nivel_ameaca;
-    Double velocidade_relativa_em_kms, distancia_min_da_terra_em_km, diametro_estimado_em_km;
-    Boolean potencialmente_perigoso;
+    private LocalDate date, data_aproximacao_maxima;
+    private String id, id_neo_referencia, nome, corpo_orbitante, nivel_ameaca;
+    private Double velocidade_relativa_em_kms, distancia_min_da_terra_em_km, diametro_estimado_em_km;
+    private Boolean potencialmente_perigoso;
+    
+
 
 //LocalDate date, String id, String  id_neo_referencia, String nome, LocalDate data_aproximacao_maxima, Double velocidade_relativa_em_kms, Double distancia_min_da_terra_em_km, Double diametro_estimado_em_km, String corpo_orbitante, Boolean potencialmente_perigoso, String nivel_ameaca
     public Asteroide(String id, String nome) {
