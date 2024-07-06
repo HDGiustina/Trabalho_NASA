@@ -24,8 +24,24 @@ CREATE TABLE opcoesDeOrdenacao (
     ordenacao VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE configuracoes (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    nomeBanco VARCHAR(50) NOT NULL,
+    chaveApi VARCHAR(200) NOT NULL
+);
+
+
+INSERT INTO configuracoes (nomeBanco, chaveApi)
+VALUES ('bancotrabalhopa', 'c7rNf6fd2psQW282XAHRMjSyhlUZtpkHWbHd5k1K');
+
+
 INSERT INTO opcoesDeOrdenacao (ordenacao) VALUES
 ('distanciaDaTerra'),
 ('potencialRisco'),
 ('velocidadeKmHr'),
 ('tamanhoDoAsteroide');
+
+select * from asteroides;
+select * from opcoesdeordenacao;
+select * from configuracoes;
+
