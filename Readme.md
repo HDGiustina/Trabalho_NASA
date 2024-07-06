@@ -1,6 +1,6 @@
 Scriptjhonson sql:
 
-
+-- drop database bancoTrabalhoPa;
 create database bancoTrabalhoPa;
 use bancoTrabalhoPa;
 
@@ -19,13 +19,33 @@ CREATE TABLE IF NOT EXISTS Asteroides (
 	PRIMARY KEY (id, date)
 );
 
-CREATE TABLE opcoesDeOrdenacao (
+CREATE TABLE opcoesDeOrdenacaoEFiltro (
     id INT AUTO_INCREMENT PRIMARY KEY,
     ordenacao VARCHAR(255) NOT NULL
 );
 
-INSERT INTO opcoesDeOrdenacao (ordenacao) VALUES
-('distanciaDaTerra'),
-('potencialRisco'),
-('velocidadeKmHr'),
-('tamanhoDoAsteroide');
+CREATE TABLE configuracoes (
+	id int AUTO_INCREMENT PRIMARY KEY,
+    nomeBanco VARCHAR(50) NOT NULL,
+    chaveApi VARCHAR(200) NOT NULL
+);
+
+
+INSERT INTO configuracoes (nomeBanco, chaveApi)
+VALUES ('bancotrabalhopa', 'c7rNf6fd2psQW282XAHRMjSyhlUZtpkHWbHd5k1K');
+
+
+INSERT INTO opcoesDeOrdenacaoEFiltro (ordenacao) VALUES
+('distancia_min_da_terra_em_km'),
+('potencialmente_perigoso'),
+('velocidade_relativa_em_kms'),
+('diametro_estimado_em_km');
+
+select * from asteroides;
+select * from opcoesdeordenacaoEFiltro;
+select * from configuracoes;
+
+
+
+
+
