@@ -1,6 +1,5 @@
 Scriptjhonson sql:
 
-
 create database bancoTrabalhoPa;
 use bancoTrabalhoPa;
 
@@ -25,7 +24,7 @@ CREATE TABLE opcoesDeOrdenacao (
 );
 
 CREATE TABLE configuracoes (
-    id int AUTO_INCREMENT PRIMARY KEY,
+	id int AUTO_INCREMENT PRIMARY KEY,
     nomeBanco VARCHAR(50) NOT NULL,
     chaveApi VARCHAR(200) NOT NULL
 );
@@ -36,12 +35,15 @@ VALUES ('bancotrabalhopa', 'c7rNf6fd2psQW282XAHRMjSyhlUZtpkHWbHd5k1K');
 
 
 INSERT INTO opcoesDeOrdenacao (ordenacao) VALUES
-('distanciaDaTerra'),
-('potencialRisco'),
-('velocidadeKmHr'),
-('tamanhoDoAsteroide');
+('distancia_min_da_terra_em_km'),
+('potencialmente_perigoso'),
+('velocidade_relativa_em_kms'),
+('diametro_estimado_em_km');
 
 select * from asteroides;
 select * from opcoesdeordenacao;
 select * from configuracoes;
+
+
+
 
