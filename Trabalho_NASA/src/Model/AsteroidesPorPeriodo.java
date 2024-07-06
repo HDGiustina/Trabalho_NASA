@@ -9,20 +9,20 @@ package Model;
  * @author User
  */
 public class AsteroidesPorPeriodo {
-    private String mes;
+    private String periodo;
     private Integer numeroPorMes;
 
-    public AsteroidesPorPeriodo(String mes, Integer numeroPorMes) {
-        this.mes = mes;
+    public AsteroidesPorPeriodo(String periodo, Integer numeroPorMes) {
+        this.periodo = periodo;
         this.numeroPorMes = numeroPorMes;
     }
 
-    public String getMes() {
-        return mes;
+    public String getPeriodo() {
+        return periodo;
     }
 
-    public void setMes(String mes) {
-        this.mes = mes;
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
     }
 
     public Integer getNumeroPorMes() {
@@ -32,6 +32,8 @@ public class AsteroidesPorPeriodo {
     public void setNumeroPorMes(Integer numeroPorMes) {
         this.numeroPorMes = numeroPorMes;
     }
+
     
+
     
 }

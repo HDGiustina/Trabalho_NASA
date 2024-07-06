@@ -257,29 +257,55 @@ public class AsteroideDAO {
         return objetosProximosATerra;
     }
 
-    public ArrayList<AsteroidesPorPeriodo> contadorDeAsteroidesProximosATerraPorPeriodo() {
+    public ArrayList<AsteroidesPorPeriodo> contadorDeAsteroidesProximosATerraPorPeriodo(String periodo) {
         ArrayList<AsteroidesPorPeriodo> asteroidesPorPeriodo = new ArrayList<>();
+        
         try {
+            String formato = "%Y-%m";
+            switch (periodo) {
+                case "ano":
+                    formato =  "%Y";
+                    break;
+                case "mes":
+                    formato =  "%Y-%m";
+                    break;
+                case "dia":
+                    formato =  "%Y-%m-%d";
+                    break;
+                default:
+                    formato =  "%Y-%m";
+                    break;
+            }
+            
             String sql = "SELECT \n"
-                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m') AS mes,\n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, ?) AS periodo,\n"
                     + "    COUNT(*) AS total_itens\n"
                     + "FROM \n"
                     + "    bancotrabalhopa.asteroides\n"
                     + "WHERE \n"
-                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m') BETWEEN \n"
-                    + "    DATE_FORMAT((SELECT MIN(data_aproximacao_maxima) FROM bancotrabalhopa.asteroides), '%Y-%m') AND \n"
-                    + "    DATE_FORMAT(CURDATE(), '%Y-%m')\n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, ?) BETWEEN \n"
+                    + "    DATE_FORMAT((SELECT MIN(data_aproximacao_maxima) FROM bancotrabalhopa.asteroides), ?) AND \n"
+                    + "    DATE_FORMAT(CURDATE(), ?)\n"
                     + "GROUP BY \n"
-                    + "    DATE_FORMAT(data_aproximacao_maxima, '%Y-%m')\n"
+                    + "    DATE_FORMAT(data_aproximacao_maxima, ?)\n"
                     + "ORDER BY \n"
-                    + "    mes;";
+                    + "    periodo;";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            System.out.println(formato);
+            st.setString(1, formato);
+            st.setString(2, formato);
+            st.setString(3, formato);
+            st.setString(4, formato);
+            st.setString(5, formato);  
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
+               
                AsteroidesPorPeriodo ateroidesPorPeriodo = new AsteroidesPorPeriodo(
-                       rs.getString("mes"),
+                       rs.getString("periodo"),
                        rs.getInt("total_itens")
                );
+                System.out.println(ateroidesPorPeriodo);
+                
       
                 asteroidesPorPeriodo.add(ateroidesPorPeriodo);
             }
