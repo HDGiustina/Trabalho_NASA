@@ -75,7 +75,7 @@ public class FrmAtualizar extends javax.swing.JFrame {
         jLabel3.setText("Atualizar Dados");
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Insira a data inicial e final do período que deseja atualizar base de dados");
+        jLabel4.setText("Insira a data inicial e final do período que deseja atualizar sua base de dados");
 
         atualizaButton.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         atualizaButton.setText("Atualizar");

@@ -157,7 +157,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Insira a data inicial e final do per&#xed;odo que deseja atualizar base de dados"/>
+        <Property name="text" type="java.lang.String" value="Insira a data inicial e final do per&#xed;odo que deseja atualizar sua base de dados"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="atualizaButton">
