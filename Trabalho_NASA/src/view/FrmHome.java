@@ -82,6 +82,7 @@ public class FrmHome extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBounds(new java.awt.Rectangle(250, 125, 0, 0));
 
         DateNowText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         DateNowText.setText("06/07/2024");
