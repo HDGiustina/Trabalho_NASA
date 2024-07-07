@@ -59,12 +59,12 @@ public class FrmHome extends javax.swing.JFrame {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Atualizar a data atual
+                // Update date now
                 Date now = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 DateNowText.setText(dateFormat.format(now));
 
-                // Atualizar o horário atual
+                // Update hour now
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH : mm : ss");
                 HorarioText.setText(timeFormat.format(now));
             }
@@ -82,8 +82,8 @@ public class FrmHome extends javax.swing.JFrame {
         String periodo = config.consultarPeridoDoGrafico();
         arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes(periodo);
 
-        BarChartPanel barChartPanel = (BarChartPanel) panelGrafico.getComponent(0); // Obtem o BarChartPanel do panelGrafico
-        barChartPanel.atualizarDados(arrayDeNumeros);
+        BarChartPanel barChartPanel = (BarChartPanel) panelGrafico.getComponent(0); // Get the BarChartPanel of panelGrafico
+        barChartPanel.updateData(arrayDeNumeros);
     }
 
     private void populateAsteroidTable() {
@@ -114,21 +114,21 @@ public class FrmHome extends javax.swing.JFrame {
 
         if (data.isEmpty()) {
 
-            LocalDate dt_inicio = LocalDate.now().minusDays(7); // Altera para a data atual
-            // Adiciona 3 dias à data atual para dt_fim
+            LocalDate dt_inicio = LocalDate.now().minusDays(7); //  minus 7 days
+            // plus 3 days
             LocalDate dt_fim = LocalDate.now().plusDays(3);
 
             try {
                 setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-                // Consulta na API
+                // query to API
                 ArrayList<Asteroide> lstAsteroides = asteroideControler.consultarAsteroidesAPI(dt_inicio, dt_fim);
 
-                // Guarda os dados no banco
+                // Store the data into db
                 AsteroideDAO DAO = new AsteroideDAO();
                 DAO.insertLstAsteroides(lstAsteroides);
 
-                // Voltando o icone do cursor ao normal
+                // Back the cursor
                 setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
             } catch (IOException | InterruptedException | SQLException ex) {
