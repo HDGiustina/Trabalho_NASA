@@ -265,7 +265,7 @@ public class AsteroideDAO {
     public Integer contadorDeAsteroidesProximosATerra() {
         Integer objetosProximosATerra = 0;
         try {
-            String sql = "select count(*) as numero from asteroides";
+            String sql = "select count(*) as numero from asteroides where data_aproximacao_maxima = current_date()";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
