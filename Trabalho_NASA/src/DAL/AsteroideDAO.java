@@ -110,20 +110,17 @@ public class AsteroideDAO {
      * diametro_estimado_em_km.
      * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms,
      * diametro_estimado_em_km
-     * @param comeco do filtro
-     * @param fim do filtro
+     * @param valorDaColuna
      * @return dados dos asteroides
      */
-    public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, Double comeco, Double fim) {
+    public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, String valorDaColuna) {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM Asteroides WHERE ? BETWEEN ? AND ? ORDER BY ?";
+            String sql = "SELECT * FROM Asteroides WHERE ? = ? ORDER BY" + ordenacao;
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             st.setString(1, filtro);
-            st.setDouble(2, comeco);
-            st.setDouble(3, fim);
-            st.setString(4, ordenacao);
+            st.setString(2, valorDaColuna);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {

@@ -31,8 +31,8 @@ public class AsteroideController {
         return asteroidesDao.consultarTodosAsteroides();
     }
     
-    public ArrayList<Asteroide> getAsteroidesFiltroEOrdenacao(String ordenacao, String filtro, Double comeco, Double fim) {
-        return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, comeco, fim);
+    public ArrayList<Asteroide> getAsteroidesFiltroEOrdenacao(String ordenacao, String filtro, String valorDaColuna) {
+        return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, valorDaColuna);
     }
     
     public ArrayList<Asteroide> getAsteroidesFiltro(String filtro, Double comeco, Double fim) {
