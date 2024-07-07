@@ -92,13 +92,24 @@ public class FrmHome extends javax.swing.JFrame {
             System.out.println("//");
         }*/
         
-        ArrayList<Asteroide> asteroides = new ArrayList<>();
+        /*ArrayList<Asteroide> asteroides = new ArrayList<>();
         AsteroideController asteroideController = new AsteroideController();
         
         asteroides = asteroideController.getAsteroidesFiltroEOrdenacao("data_aproximacao_maxima", "velocidade_relativa_em_kms", 8.0, 12.0);
         for (Asteroide asteroide : asteroides) {
             System.out.println(asteroide.getData_aproximacao_maxima());
             System.out.println(asteroide.getVelocidade_relativa_em_kms());
+            System.out.println("//");
+        }*/
+        
+        ArrayList<OpcoesDeFitro> opcoesDeFitro = new ArrayList<>();
+        OpcoesDeFitroController opcoesDeFitroController = new OpcoesDeFitroController();
+        
+        opcoesDeFitro = opcoesDeFitroController.getOpcoesDeFiltro();
+        
+        for(OpcoesDeFitro filtro : opcoesDeFitro){
+            System.out.println(filtro.getColuna());
+            System.out.println(filtro.getTextoNome());
             System.out.println("//");
         }
     }

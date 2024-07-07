@@ -18,12 +18,22 @@ INSERT INTO opcoesDeOrdenacao (ordenacao, texto) VALUES
     ('nome', 'Nome'),
     ('potencialmente_perigoso', 'Perigoso'),
     ('velocidade_relativa_em_kms', 'Velocidade relativa');
+    
+-- ordenacao
+CREATE TABLE opcoesDeFitro ( id INT AUTO_INCREMENT PRIMARY KEY, filtro VARCHAR(255) NOT NULL, texto VARCHAR(255) NOT NULL );
+INSERT INTO opcoesDeFitro (filtro, texto) VALUES
+    ('diametro_estimado_em_km', 'Diâmetro estimado'),
+    ('distancia_min_da_terra_em_km', 'Distância Mínima'),
+    ('nivel_ameaca', 'Nível de Ameaça'),
+    ('potencialmente_perigoso', 'Perigoso'),
+    ('velocidade_relativa_em_kms', 'Velocidade relativa');
 
     
-
+select * from opcoesDeFitro;
 select * from asteroides; 
 select * from configuracoes;
 SELECT * FROM opcoesDeOrdenacao;
+
 
 
 
