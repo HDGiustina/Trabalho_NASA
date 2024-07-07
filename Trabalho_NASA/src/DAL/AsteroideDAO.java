@@ -103,15 +103,11 @@ public class AsteroideDAO {
         return lstAsteroides;
     }
 
-    /**
-     *
-     * @param ordenacao opções que poderão vir distancia_min_da_terra_em_km,
-     * potencialmente_perigoso, velocidade_relativa_em_kms e
-     * diametro_estimado_em_km.
-     * @param filtro distancia_min_da_terra_em_km, velocidade_relativa_em_kms,
-     * diametro_estimado_em_km
-     * @param valorDaColuna
-     * @return dados dos asteroides
+    /** 
+     * @param ordenacao qual a ordenacao
+     * @param filtro nome da coluna a ser usadado 
+     * @param valorDaColuna  valor  da coluna a ser procurado
+     * @return os asteroides ordenados e filtrados
      */
     public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, String valorDaColuna) {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
@@ -146,6 +142,13 @@ public class AsteroideDAO {
         return lstAsteroides;
     }
     
+    /** 
+     * @param ordenacao qual a ordenacao
+     * @param filtro nome da coluna a ser usadado 
+     * @param min valor minimo do filtro
+     * @param max valor maximo de filtro
+     * @return os asteroides ordenados e filtrados
+     */
     public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, Double min, Double max) {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
         try {
@@ -261,7 +264,11 @@ public class AsteroideDAO {
         }
         return lstAsteroides;
     }
-
+    
+    /**
+     * 
+     * @return retorna a contagem de asteroides proximo a terra no dia de hoje
+     */
     public Integer contadorDeAsteroidesProximosATerra() {
         Integer objetosProximosATerra = 0;
         try {
@@ -278,11 +285,17 @@ public class AsteroideDAO {
         }
         return objetosProximosATerra;
     }
-
+    
+    /**
+     * 
+     * @param periodo ano, mes, dia
+     * @return um count dos asteroides por periodo
+     */
     public ArrayList<AsteroidesPorPeriodo> contadorDeAsteroidesProximosATerraPorPeriodo(String periodo) {
         ArrayList<AsteroidesPorPeriodo> asteroidesPorPeriodo = new ArrayList<>();
 
         try {
+            //troca o formato a ser usado no sql para pegar so pelo ano, dia ou mes
             String formato = "%Y-%m";
             switch (periodo) {
                 case "ano":
@@ -320,6 +333,7 @@ public class AsteroideDAO {
             st.setString(4, formato);
             st.setString(5, formato);
             ResultSet rs = st.executeQuery();
+            //dados a serem pegos que é o periodo e o totem de itens naquele periodo
             while (rs.next()) {
 
                 AsteroidesPorPeriodo ateroidesPorPeriodo = new AsteroidesPorPeriodo(
