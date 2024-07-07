@@ -4,21 +4,46 @@
  */
 package view;
 
-import Controller.MenuController;
+import Controller.*; 
+import Model.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
- * @author Imply
  */
 public class FrmConfiguracao extends javax.swing.JFrame {
 
     private final MenuController menu;
+    private final ConfiguracoesController controller;
+    private Configuracoes config;
     /**
      * Creates new form FrmConfiguracao
      */
     public FrmConfiguracao() {
         initComponents();
         menu = new MenuController(this);
+        controller = new ConfiguracoesController();
+        
+        // Consulta no banco a configuração de qual deve ser o periodo que está em vigor
+        config = new Configuracoes();
+        config.setPeriodo_grafico(controller.consultarPeridoDoGrafico());
+        switch (config.getPeriodo_grafico()) {
+            case "mes":
+                periodoGrafico.setSelectedIndex(0);
+                break;
+            case "ano":
+                periodoGrafico.setSelectedIndex(1);
+                break;
+            case "dia":
+                periodoGrafico.setSelectedIndex(2);
+                break;
+            default:
+                break;
+        }
+        
+        
     }
 
     /**
@@ -33,10 +58,8 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        AtualizaButton = new javax.swing.JButton();
+        periodoGrafico = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuDashboard = new javax.swing.JMenuItem();
@@ -57,13 +80,18 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         jLabel3.setText("Configurações");
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Configure a chave da API e o nome do banco de dados utilizado.");
+        jLabel4.setText("Espaço de configurações do Dashboard");
 
-        jLabel1.setText("Chave da API:");
+        jLabel1.setText("Classificação do período do gráfico de frequencia:");
 
-        jLabel2.setText("Nome do Banco:");
+        AtualizaButton.setText("Atualizar");
+        AtualizaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtualizaButtonActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Atualizar");
+        periodoGrafico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mês", "Ano", "Dia" }));
 
         menuArquivo.setText("Arquivo");
 
@@ -138,16 +166,13 @@ public class FrmConfiguracao extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2)
+                    .addComponent(AtualizaButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(periodoGrafico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -160,13 +185,9 @@ public class FrmConfiguracao extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(periodoGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addComponent(AtualizaButton)
                 .addContainerGap())
         );
 
@@ -196,6 +217,43 @@ public class FrmConfiguracao extends javax.swing.JFrame {
     private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSobreActionPerformed
         menu.telaAtualiza(new FrmSobre());
     }//GEN-LAST:event_menuSobreActionPerformed
+
+    private void AtualizaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtualizaButtonActionPerformed
+        
+        // Seta a opção de periodo conforme o selecionado no Combo Box
+        if(periodoGrafico.getSelectedItem().equals("Mês")){
+            config.setPeriodo_grafico("mes");
+        } else if(periodoGrafico.getSelectedItem().equals("Ano")){
+            config.setPeriodo_grafico("ano");
+        } else if(periodoGrafico.getSelectedItem().equals("Dia")){
+            config.setPeriodo_grafico("dia");
+        }
+        
+        try {
+            // Atualiza a configurações do peridodo no banco de dados
+            controller.updateConfiguracoes(config);
+            
+            //Opções de resposta do Dialog
+            Object[] opcoes = {"Sim", "Não"};
+            
+            // Dando a opção do usuário redireciona para a tela de dashboard
+            int resposta = JOptionPane.showOptionDialog(null, 
+                "Configurações atualizadas com sucesso! Deseja abrir a página de Dashboard?", 
+                "Configurações atualizadas", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.INFORMATION_MESSAGE, 
+                null, 
+                opcoes, 
+                opcoes[0]
+            );
+            
+            if (resposta == JOptionPane.YES_OPTION) {
+                menu.telaAtualiza(new FrmHome());
+            } 
+        } catch (Exception ex) {
+            Logger.getLogger(FrmConfiguracao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AtualizaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,14 +291,11 @@ public class FrmConfiguracao extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton AtualizaButton;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenuItem menuAtualizar;
@@ -251,5 +306,6 @@ public class FrmConfiguracao extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuResultados;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenuItem menuSobre;
+    private javax.swing.JComboBox<String> periodoGrafico;
     // End of variables declaration//GEN-END:variables
 }
