@@ -5,6 +5,7 @@
 package view;
 
 import Controller.*;
+import Model.Asteroide;
 import Model.AsteroidesPorPeriodo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import Model.BarChartPanel;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -50,12 +52,34 @@ public class FrmHome extends javax.swing.JFrame {
         });
         timer.start();
         AsteroideController asteroideControler = new AsteroideController();
+        ConfiguracoesController config = new ConfiguracoesController();
         Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
         contadorText.setText(objetosProximoATerra.toString());
         ArrayList<AsteroidesPorPeriodo> arrayDeNumeros = new ArrayList<>();
-        arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes("mes");
+        String periodo = config.consultarPeridoDoGrafico();
+        arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes(periodo);
         barChartPanel.atualizarDados(arrayDeNumeros);
+        populateAsteroidTable();
 
+    }
+
+    private void populateAsteroidTable() {
+        DefaultTableModel model = (DefaultTableModel) ListaAproximacoes.getModel();
+        model.setRowCount(0); // Clear previous data
+
+        // Fetch asteroid data from AsteroideController
+        AsteroideController controller = new AsteroideController();
+        ArrayList<Asteroide> asteroides = controller.getAsteroides();
+
+        // Populate the table with asteroid data
+        for (Asteroide asteroide : asteroides) {
+            Object[] row = {
+                asteroide.getNome(),
+                asteroide.getData_aproximacao_maxima(),
+                asteroide.getDistancia_min_da_terra_em_km(),
+                asteroide.getNivel_ameaca()};
+            model.addRow(row);
+        }
     }
 
     /**
