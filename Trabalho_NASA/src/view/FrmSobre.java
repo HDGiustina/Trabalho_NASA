@@ -116,7 +116,7 @@ public class FrmSobre extends javax.swing.JFrame {
 
         menuConfiguracaoPai.setText("Configurações");
 
-        menuConfiguracao.setText("Configurações");
+        menuConfiguracao.setText("Preferências");
         menuConfiguracao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuConfiguracaoActionPerformed(evt);

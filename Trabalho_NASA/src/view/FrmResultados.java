@@ -66,6 +66,7 @@ public class FrmResultados extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(200, 150, 0, 0));
         setMinimumSize(new java.awt.Dimension(1000, 500));
 
+        tableResultados.setAutoCreateRowSorter(true);
         tableResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -149,7 +150,7 @@ public class FrmResultados extends javax.swing.JFrame {
 
         menuConfiguracaoPai.setText("Configurações");
 
-        menuConfiguracao.setText("Configurações");
+        menuConfiguracao.setText("Preferências");
         menuConfiguracao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuConfiguracaoActionPerformed(evt);

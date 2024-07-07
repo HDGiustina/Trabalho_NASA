@@ -176,6 +176,7 @@ public class FrmHome extends javax.swing.JFrame {
 
         jLabel2.setText("Lista de próximas aproximações:");
 
+        ListaAproximacoes.setAutoCreateRowSorter(true);
         ListaAproximacoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -292,7 +293,7 @@ public class FrmHome extends javax.swing.JFrame {
 
         menuConfiguracaoPai.setText("Configurações");
 
-        menuConfiguracao.setText("Configurações");
+        menuConfiguracao.setText("Preferências");
         menuConfiguracao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuConfiguracaoActionPerformed(evt);
