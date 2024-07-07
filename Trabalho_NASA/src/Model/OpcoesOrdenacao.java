@@ -11,10 +11,12 @@ package Model;
 public class OpcoesOrdenacao {
     private Integer id;
     private String ordenacao;
+    private String texto;
 
-    public OpcoesOrdenacao(Integer id, String ordenacao) {
+    public OpcoesOrdenacao(Integer id, String ordenacao, String texto) {
         this.id = id;
         this.ordenacao = ordenacao;
+        this.texto = texto;
     }
 
     public OpcoesOrdenacao(String ordenacao) {
@@ -36,6 +38,17 @@ public class OpcoesOrdenacao {
     public void setOrdenacao(String ordenacao) {
         this.ordenacao = ordenacao;
     }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
     
-    
+    @Override
+    public String toString() {
+        return texto;
+    }
 }

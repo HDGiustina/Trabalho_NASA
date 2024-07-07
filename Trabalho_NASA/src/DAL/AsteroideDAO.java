@@ -98,9 +98,7 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            conn = null;
-        }
+        } 
         return lstAsteroides;
     }
 
@@ -147,8 +145,6 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            conn = null;
         }
         return lstAsteroides;
     }
@@ -192,8 +188,6 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            conn = null;
         }
         return lstAsteroides;
     }
@@ -209,9 +203,8 @@ public class AsteroideDAO {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM Asteroides ORDER BY ?";
+            String sql = "SELECT * FROM Asteroides ORDER BY " + ordenacao;
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
-            st.setString(1, ordenacao);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -234,8 +227,6 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            conn = null;
         }
         return lstAsteroides;
     }

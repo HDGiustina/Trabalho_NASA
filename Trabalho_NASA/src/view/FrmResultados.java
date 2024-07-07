@@ -5,20 +5,34 @@
 package view;
 
 import Controller.*;
+import Model.*;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Imply
  */
 public class FrmResultados extends javax.swing.JFrame {
 
     private final MenuController menu;
+    private final AsteroideController controller = new AsteroideController();
+    private final OpcoesOrdenacaoController optionsController = new OpcoesOrdenacaoController();
+    private final ArrayList<OpcoesOrdenacao> options = optionsController.getOpcoesDeOrdenacao();
+    private final DefaultComboBoxModel modelOrdenacao = new DefaultComboBoxModel<>(options.toArray(new OpcoesOrdenacao[0]));
     /**
      * Creates new form FrmResultados
      */
     public FrmResultados() {
         initComponents();
         menu = new MenuController(this);
+
+        // Pegando lista de asteroides já ordenada
+        ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesOrdenacao(options.get(0).getOrdenacao());
+        
+        // Caregando a tabela
+        carregaTable(asteroidesOrdenado);
     }
 
     /**
@@ -31,8 +45,8 @@ public class FrmResultados extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tableResultados = new javax.swing.JTable();
+        ordenacaoInput = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -49,22 +63,42 @@ public class FrmResultados extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBounds(new java.awt.Rectangle(350, 200, 0, 0));
+        setBounds(new java.awt.Rectangle(200, 150, 0, 0));
+        setMinimumSize(new java.awt.Dimension(1000, 500));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableResultados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "Data de Aproximação", "Velocidade Relativa", "Distância mínima", "Diâmetro Estimado", "Corpo orbitante", "Perigoso", "Nível de Ameaça"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableResultados);
+
+        ordenacaoInput.setModel(this.modelOrdenacao);
+        ordenacaoInput.setToolTipText("");
+        ordenacaoInput.setPrototypeDisplayValue("Selecione");
+        ordenacaoInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordenacaoInputActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Ordenar:");
 
@@ -146,11 +180,11 @@ public class FrmResultados extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 922, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, 233, Short.MAX_VALUE))
+                            .addComponent(ordenacaoInput, 0, 233, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -166,7 +200,7 @@ public class FrmResultados extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ordenacaoInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -200,6 +234,42 @@ public class FrmResultados extends javax.swing.JFrame {
         menu.telaAtualiza(new FrmSobre());
     }//GEN-LAST:event_menuSobreActionPerformed
 
+    private void ordenacaoInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenacaoInputActionPerformed
+        
+        // Pegando lista de asteroides ordenada conforme o objeto selecionado no combo box
+        OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
+        ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesOrdenacao(selectedOption.getOrdenacao());
+        
+        // Caregando a tabela
+        carregaTable(asteroidesOrdenado);
+    }//GEN-LAST:event_ordenacaoInputActionPerformed
+
+    
+    private void carregaTable(ArrayList<Asteroide> asteroides) {
+        DefaultTableModel tbl = (DefaultTableModel) tableResultados.getModel();
+        tbl.setRowCount(0);
+        for (int i = 0; i < asteroides.size(); i++) {
+            Object[] linha = new Object[8];
+            Asteroide temp = asteroides.get(i);
+            linha[0] = temp.getNome();
+            
+            // Formatando data de aproximação para um formato amigavel
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            linha[1] = temp.getData_aproximacao_maxima().format(formatter);
+            
+            linha[2] = temp.getVelocidade_relativa_em_kms();
+            linha[3] = temp.getDistancia_min_da_terra_em_km();
+            linha[4] = temp.getDiametro_estimado_em_km();
+            linha[5] = temp.getCorpo_orbitante();
+            
+            // Trocando o valor Booleano por uma string mais legivel 
+            linha[6] = temp.getPotencialmente_perigoso() ? "Sim" : "Não";
+            linha[7] = temp.getNivel_ameaca();
+            
+            tbl.addRow(linha);
+        }
+
+    }
     /**
      * @param args the command line arguments
      */
@@ -236,13 +306,11 @@ public class FrmResultados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuArquivo;
     private javax.swing.JMenuItem menuAtualizar;
@@ -253,5 +321,7 @@ public class FrmResultados extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuResultados;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenuItem menuSobre;
+    private javax.swing.JComboBox<String> ordenacaoInput;
+    private javax.swing.JTable tableResultados;
     // End of variables declaration//GEN-END:variables
 }

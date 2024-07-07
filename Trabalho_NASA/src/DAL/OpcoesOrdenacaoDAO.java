@@ -19,20 +19,20 @@ import java.util.logging.Logger;
  */
 public class OpcoesOrdenacaoDAO {
 
-    private BdConexao conn = new BdConexao();
+    private BdConexao conn;
 
     public ArrayList<OpcoesOrdenacao> consultarTodasOrdenacoesPossiveis() {
+        conn = new BdConexao();
         ArrayList<OpcoesOrdenacao> lstDeOpcoes = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM opcoesDeOrdenacao";
+            String sql = "SELECT * FROM opcoesdeordenacaoEFiltro";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 OpcoesOrdenacao opcao = new OpcoesOrdenacao(
-                        rs.getInt("id")
-                        , rs.getString("ordenacao"));
+                        rs.getInt("id"), rs.getString("ordenacao"), rs.getString("texto"));
                 
                 lstDeOpcoes.add(opcao);
             }
