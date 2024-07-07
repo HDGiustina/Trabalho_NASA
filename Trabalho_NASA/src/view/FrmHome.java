@@ -5,6 +5,7 @@
 package view;
 
 import Controller.*;
+import DAL.AsteroideDAO;
 import Model.Asteroide;
 import Model.AsteroidesPorPeriodo;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,15 @@ import java.text.SimpleDateFormat;
 
 import Model.*;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -24,19 +33,29 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrmHome extends javax.swing.JFrame {
 
-    private final MenuController menu;
+    private MenuController menu;
 
     /**
      * Creates new form FrmHome
      */
     public FrmHome() {
         initComponents();
+        initiateData();
+        setupGrafico();
+        startClock();
+        displayNumeroAsteroidesProximosATerra();
+        populateAsteroidTable();
+    }
+
+    private void setupGrafico() {
         menu = new MenuController(this);
         BarChartPanel barChartPanel = new BarChartPanel(new ArrayList<>()); // Inicialmente vazio
         panelGrafico.setLayout(new BorderLayout());
         panelGrafico.add(barChartPanel, BorderLayout.CENTER);
         panelGrafico.validate();
+    }
 
+    private void startClock() {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,86 +70,72 @@ public class FrmHome extends javax.swing.JFrame {
             }
         });
         timer.start();
+    }
+
+    private void displayNumeroAsteroidesProximosATerra() {
         AsteroideController asteroideControler = new AsteroideController();
         ConfiguracoesController config = new ConfiguracoesController();
         Integer objetosProximoATerra = asteroideControler.getNumeroAsteroidesProximosATerra();
         contadorText.setText(objetosProximoATerra.toString());
+
         ArrayList<AsteroidesPorPeriodo> arrayDeNumeros = new ArrayList<>();
         String periodo = config.consultarPeridoDoGrafico();
         arrayDeNumeros = asteroideControler.getNumeroAsteroidesProximosATerraPorMes(periodo);
-        barChartPanel.atualizarDados(arrayDeNumeros);
-        populateAsteroidTable();
 
-        //filtro string
-        /*ArrayList<String> arrayTeste = new ArrayList<>();
-        UtilsController utilController = new UtilsController();
-        arrayTeste = utilController.getFiltrosColuna("potencialmente_perigoso");
-        for (int i = 0; i < arrayTeste.size(); i++) {
-            System.out.println(arrayTeste.get(i));  
-        }*/
-        //UtilsController utilController = new UtilsController();
-        //filtro string
-        /*ArrayList<Utils> arrayTesteDouble = new ArrayList<>();
-        arrayTesteDouble = utilController.getFiltrosColunaDouble("distancia_min_da_terra_em_km");
-        for (Utils util : arrayTesteDouble) {
-            System.out.println(util.getColuna());
-            System.out.println(util.getMax());
-            System.out.println(util.getMin());
-        }*/
-        
-        
-        
-        
-        //pegar asteroides
-       /* ArrayList<Asteroide> asteroides = new ArrayList<>();
-        AsteroideController asteroideController = new AsteroideController();
-        
-        asteroides = asteroideController.getAsteroidesFiltroEOrdenacao("data_aproximacao_maxima", "nivel_ameaca", "Nenhuma");
-        for (Asteroide asteroide : asteroides) {
-            System.out.println(asteroide.getData_aproximacao_maxima());
-            System.out.println(asteroide.getNivel_ameaca());
-            System.out.println("//");
-        }*/
-        
-        /*ArrayList<Asteroide> asteroides = new ArrayList<>();
-        AsteroideController asteroideController = new AsteroideController();
-        
-        asteroides = asteroideController.getAsteroidesFiltroEOrdenacao("data_aproximacao_maxima", "velocidade_relativa_em_kms", 8.0, 12.0);
-        for (Asteroide asteroide : asteroides) {
-            System.out.println(asteroide.getData_aproximacao_maxima());
-            System.out.println(asteroide.getVelocidade_relativa_em_kms());
-            System.out.println("//");
-        }*/
-        
-        ArrayList<OpcoesDeFitro> opcoesDeFitro = new ArrayList<>();
-        OpcoesDeFitroController opcoesDeFitroController = new OpcoesDeFitroController();
-        
-        opcoesDeFitro = opcoesDeFitroController.getOpcoesDeFiltro();
-        
-        for(OpcoesDeFitro filtro : opcoesDeFitro){
-            System.out.println(filtro.getColuna());
-            System.out.println(filtro.getTextoNome());
-            System.out.println("//");
-        }
+        BarChartPanel barChartPanel = (BarChartPanel) panelGrafico.getComponent(0); // Obtem o BarChartPanel do panelGrafico
+        barChartPanel.atualizarDados(arrayDeNumeros);
     }
 
     private void populateAsteroidTable() {
         DefaultTableModel model = (DefaultTableModel) ListaAproximacoes.getModel();
         model.setRowCount(0); // Clear previous data
 
-        // Fetch asteroid data from AsteroideController
         AsteroideController controller = new AsteroideController();
         ArrayList<Asteroide> asteroides = controller.getAteroidesFuturo();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        // Populate the table with asteroid data
         for (Asteroide asteroide : asteroides) {
+            // Round the distance
+            long roundedDistance = Math.round(asteroide.getDistancia_min_da_terra_em_km());
+
             Object[] row = {
                 asteroide.getNome(),
-                asteroide.getData_aproximacao_maxima(),
-                asteroide.getDistancia_min_da_terra_em_km(),
-                asteroide.getNivel_ameaca()};
+                asteroide.getData_aproximacao_maxima().format(formatter),
+                roundedDistance, // Rounded distance value
+                asteroide.getNivel_ameaca()
+            };
             model.addRow(row);
         }
+    }
+
+    private void initiateData() {
+        AsteroideController asteroideControler = new AsteroideController();
+        ArrayList<Asteroide> data = asteroideControler.getAsteroides();
+
+        if (data.isEmpty()) {
+
+            LocalDate dt_inicio = LocalDate.now().minusDays(7); // Altera para a data atual
+            // Adiciona 3 dias à data atual para dt_fim
+            LocalDate dt_fim = LocalDate.now().plusDays(3);
+
+            try {
+                setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
+                // Consulta na API
+                ArrayList<Asteroide> lstAsteroides = asteroideControler.consultarAsteroidesAPI(dt_inicio, dt_fim);
+
+                // Guarda os dados no banco
+                AsteroideDAO DAO = new AsteroideDAO();
+                DAO.insertLstAsteroides(lstAsteroides);
+
+                // Voltando o icone do cursor ao normal
+                setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+            } catch (IOException | InterruptedException | SQLException ex) {
+                Logger.getLogger(FrmAtualizar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
     /**
@@ -154,6 +159,7 @@ public class FrmHome extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         HorarioText = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuDashboard = new javax.swing.JMenuItem();
@@ -167,13 +173,15 @@ public class FrmHome extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Nasa dos pampas");
         setBounds(new java.awt.Rectangle(250, 125, 0, 0));
 
-        DateNowText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        DateNowText.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         DateNowText.setText("06/07/2024");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Lista de próximas aproximações:");
 
         ListaAproximacoes.setAutoCreateRowSorter(true);
@@ -202,7 +210,7 @@ public class FrmHome extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -214,7 +222,7 @@ public class FrmHome extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
 
@@ -222,8 +230,8 @@ public class FrmHome extends javax.swing.JFrame {
         contadorObjetos.setLayout(new javax.swing.BoxLayout(contadorObjetos, javax.swing.BoxLayout.PAGE_AXIS));
 
         label1.setAlignment(java.awt.Label.CENTER);
-        label1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        label1.setText("Contador de objetos próximos:");
+        label1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        label1.setText("Contador de objetos próximos no dia atual:");
         contadorObjetos.add(label1);
 
         contadorText.setAlignment(java.awt.Label.CENTER);
@@ -241,15 +249,19 @@ public class FrmHome extends javax.swing.JFrame {
         );
         panelGraficoLayout.setVerticalGroup(
             panelGraficoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 162, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel3.setText("Data:");
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel4.setText("Horário:");
 
-        HorarioText.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        HorarioText.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         HorarioText.setText("00 : 00 : 00");
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/nasa-logo.png"))); // NOI18N
 
         menuArquivo.setText("Arquivo");
 
@@ -322,45 +334,49 @@ public class FrmHome extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(DateNowText))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(HorarioText))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(HorarioText))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(DateNowText)))))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(contadorObjetos, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
+                    .addComponent(contadorObjetos, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(DateNowText)
+                                .addComponent(jLabel3))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(HorarioText)
+                                .addComponent(jLabel4)))
+                        .addComponent(contadorObjetos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(DateNowText)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(HorarioText)
-                            .addComponent(jLabel4))
-                        .addGap(28, 28, 28)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(contadorObjetos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(262, 262, 262)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1)
+                        .addGap(22, 22, 22)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelGrafico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -431,6 +447,7 @@ public class FrmHome extends javax.swing.JFrame {
     private javax.swing.JTable ListaAproximacoes;
     private javax.swing.JPanel contadorObjetos;
     private java.awt.Label contadorText;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

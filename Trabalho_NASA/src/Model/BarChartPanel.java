@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.ConfiguracoesController;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
@@ -12,9 +13,11 @@ import java.util.ArrayList;
 public class BarChartPanel extends JPanel {
 
     private DefaultCategoryDataset dataset;
+    private ConfiguracoesController config = new ConfiguracoesController();
 
     public BarChartPanel(ArrayList<AsteroidesPorPeriodo> asteroidesPorPeriodo) {
         initComponents();
+        String periodoDisplay = config.consultarPeridoDoGrafico();
 
         // Criar dataset inicial com os dados fornecidos
         dataset = new DefaultCategoryDataset();
@@ -24,8 +27,8 @@ public class BarChartPanel extends JPanel {
 
         // Criar o gráfico de barras inicial
         JFreeChart chart = ChartFactory.createBarChart(
-                "Frequência de Asteroides por Mês", // título do gráfico
-                "Mês", // rótulo do eixo X
+                "Frequência de Asteroides por " + periodoDisplay, // título do gráfico
+                periodoDisplay, // rótulo do eixo X
                 "Número de Asteroides", // rótulo do eixo Y
                 dataset, // dados
                 PlotOrientation.VERTICAL, // orientação do gráfico
