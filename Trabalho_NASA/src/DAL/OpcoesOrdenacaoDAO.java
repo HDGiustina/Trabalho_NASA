@@ -26,7 +26,7 @@ public class OpcoesOrdenacaoDAO {
         ArrayList<OpcoesOrdenacao> lstDeOpcoes = new ArrayList<>();
 
         try {
-            String sql = "SELECT * FROM opcoesdeordenacaoEFiltro";
+            String sql = "SELECT * FROM opcoesDeOrdenacao";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 

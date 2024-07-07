@@ -201,18 +201,17 @@ public class AsteroideDAO {
      */
     public ArrayList<Asteroide> consultarTodosAsteroidesPorOrdenacao(String ordenacao) {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
-        try {
-
+        try {  
             String sql = "SELECT * FROM Asteroides ORDER BY " + ordenacao;
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
-                ast.setDate(LocalDate.parse(rs.getString("date")));  // Data consultada
+                ast.setDate(LocalDate.parse(rs.getString("date")));  
                 ast.setId(rs.getString("id")); // id
-                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
-                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima")));
                 ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
                 ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
                 ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
