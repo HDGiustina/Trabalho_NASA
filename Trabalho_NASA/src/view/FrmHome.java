@@ -13,7 +13,7 @@ import javax.swing.Timer;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-import Model.BarChartPanel;
+import Model.*;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -61,6 +61,46 @@ public class FrmHome extends javax.swing.JFrame {
         barChartPanel.atualizarDados(arrayDeNumeros);
         populateAsteroidTable();
 
+        //filtro string
+        /*ArrayList<String> arrayTeste = new ArrayList<>();
+        UtilsController utilController = new UtilsController();
+        arrayTeste = utilController.getFiltrosColuna("potencialmente_perigoso");
+        for (int i = 0; i < arrayTeste.size(); i++) {
+            System.out.println(arrayTeste.get(i));  
+        }*/
+        //UtilsController utilController = new UtilsController();
+        //filtro string
+        /*ArrayList<Utils> arrayTesteDouble = new ArrayList<>();
+        arrayTesteDouble = utilController.getFiltrosColunaDouble("distancia_min_da_terra_em_km");
+        for (Utils util : arrayTesteDouble) {
+            System.out.println(util.getColuna());
+            System.out.println(util.getMax());
+            System.out.println(util.getMin());
+        }*/
+        
+        
+        
+        
+        //pegar asteroides
+       /* ArrayList<Asteroide> asteroides = new ArrayList<>();
+        AsteroideController asteroideController = new AsteroideController();
+        
+        asteroides = asteroideController.getAsteroidesFiltroEOrdenacao("data_aproximacao_maxima", "nivel_ameaca", "Nenhuma");
+        for (Asteroide asteroide : asteroides) {
+            System.out.println(asteroide.getData_aproximacao_maxima());
+            System.out.println(asteroide.getNivel_ameaca());
+            System.out.println("//");
+        }*/
+        
+        ArrayList<Asteroide> asteroides = new ArrayList<>();
+        AsteroideController asteroideController = new AsteroideController();
+        
+        asteroides = asteroideController.getAsteroidesFiltroEOrdenacao("data_aproximacao_maxima", "velocidade_relativa_em_kms", 8.0, 12.0);
+        for (Asteroide asteroide : asteroides) {
+            System.out.println(asteroide.getData_aproximacao_maxima());
+            System.out.println(asteroide.getVelocidade_relativa_em_kms());
+            System.out.println("//");
+        }
     }
 
     private void populateAsteroidTable() {

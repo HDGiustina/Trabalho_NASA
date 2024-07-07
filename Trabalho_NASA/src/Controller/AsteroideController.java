@@ -35,6 +35,10 @@ public class AsteroideController {
         return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, valorDaColuna);
     }
     
+    public ArrayList<Asteroide> getAsteroidesFiltroEOrdenacao(String ordenacao, String filtro, Double min, Double max) {
+        return asteroidesDao.consultarTodosAsteroidesPorFiltroEOrdenacao(ordenacao, filtro, min, max);
+    }
+    
     public ArrayList<Asteroide> getAsteroidesFiltro(String filtro, Double comeco, Double fim) {
         return asteroidesDao.consultarTodosAsteroidesPorFiltro(filtro, comeco, fim);
     }

@@ -117,10 +117,44 @@ public class AsteroideDAO {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
         try {
 
-            String sql = "SELECT * FROM Asteroides WHERE ? = ? ORDER BY" + ordenacao;
+            String sql = "SELECT * FROM Asteroides WHERE " + filtro + " = ? ORDER BY " + ordenacao;
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
-            st.setString(1, filtro);
-            st.setString(2, valorDaColuna);
+            st.setString(1, valorDaColuna);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));  // Data consultada
+                ast.setId(rs.getString("id")); // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             // id_neo_referencia
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima"))); // data_aproximacao_maxima
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+
+                lstAsteroides.add(ast);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lstAsteroides;
+    }
+    
+    public ArrayList<Asteroide> consultarTodosAsteroidesPorFiltroEOrdenacao(String ordenacao, String filtro, Double min, Double max) {
+        ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
+        try {
+
+            String sql = "SELECT * FROM Asteroides WHERE " + filtro + " BETWEEN ? AND ? ORDER BY " + ordenacao;
+
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            st.setDouble(1, min);
+            st.setDouble(2, max);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {

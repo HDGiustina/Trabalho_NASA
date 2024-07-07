@@ -6,6 +6,7 @@ package Controller;
 
 import java.util.ArrayList;
 import DAL.UtilsDAO;
+import Model.Utils;
 
 /**
  *
@@ -16,5 +17,9 @@ public class UtilsController {
     
     public ArrayList<String> getFiltrosColuna(String coluna){
         return utilsDao.getFiltrosColuna(coluna);
+    }
+    
+    public ArrayList<Utils> getFiltrosColunaDouble(String coluna){
+        return utilsDao.getFiltrosColunaDouble(coluna);
     }
 }
