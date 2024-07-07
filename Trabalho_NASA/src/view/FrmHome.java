@@ -69,7 +69,7 @@ public class FrmHome extends javax.swing.JFrame {
 
         // Fetch asteroid data from AsteroideController
         AsteroideController controller = new AsteroideController();
-        ArrayList<Asteroide> asteroides = controller.getAsteroides();
+        ArrayList<Asteroide> asteroides = controller.getAteroidesFuturo();
 
         // Populate the table with asteroid data
         for (Asteroide asteroide : asteroides) {

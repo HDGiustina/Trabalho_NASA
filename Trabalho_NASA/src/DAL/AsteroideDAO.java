@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,7 +99,7 @@ public class AsteroideDAO {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return lstAsteroides;
     }
 
@@ -201,16 +202,16 @@ public class AsteroideDAO {
      */
     public ArrayList<Asteroide> consultarTodosAsteroidesPorOrdenacao(String ordenacao) {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
-        try {  
+        try {
             String sql = "SELECT * FROM Asteroides ORDER BY " + ordenacao;
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
-                ast.setDate(LocalDate.parse(rs.getString("date")));  
+                ast.setDate(LocalDate.parse(rs.getString("date")));
                 ast.setId(rs.getString("id")); // id
-                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));                             
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));
                 ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima")));
                 ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
                 ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
@@ -249,24 +250,24 @@ public class AsteroideDAO {
 
     public ArrayList<AsteroidesPorPeriodo> contadorDeAsteroidesProximosATerraPorPeriodo(String periodo) {
         ArrayList<AsteroidesPorPeriodo> asteroidesPorPeriodo = new ArrayList<>();
-        
+
         try {
             String formato = "%Y-%m";
             switch (periodo) {
                 case "ano":
-                    formato =  "%Y";
+                    formato = "%Y";
                     break;
                 case "mes":
-                    formato =  "%Y-%m";
+                    formato = "%Y-%m";
                     break;
                 case "dia":
-                    formato =  "%Y-%m-%d";
+                    formato = "%Y-%m-%d";
                     break;
                 default:
-                    formato =  "%Y-%m";
+                    formato = "%Y-%m";
                     break;
             }
-            
+
             String sql = "SELECT \n"
                     + "    DATE_FORMAT(data_aproximacao_maxima, ?) AS periodo,\n"
                     + "    COUNT(*) AS total_itens\n"
@@ -286,17 +287,16 @@ public class AsteroideDAO {
             st.setString(2, formato);
             st.setString(3, formato);
             st.setString(4, formato);
-            st.setString(5, formato);  
+            st.setString(5, formato);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-               
-               AsteroidesPorPeriodo ateroidesPorPeriodo = new AsteroidesPorPeriodo(
-                       rs.getString("periodo"),
-                       rs.getInt("total_itens")
-               );
+
+                AsteroidesPorPeriodo ateroidesPorPeriodo = new AsteroidesPorPeriodo(
+                        rs.getString("periodo"),
+                        rs.getInt("total_itens")
+                );
                 System.out.println(ateroidesPorPeriodo);
-                
-      
+
                 asteroidesPorPeriodo.add(ateroidesPorPeriodo);
             }
         } catch (SQLException ex) {
@@ -307,4 +307,43 @@ public class AsteroideDAO {
         return asteroidesPorPeriodo;
     }
 
+    /**
+     *
+     * @return todos os asteroides de data presente para frente com limite de 20
+     */
+    public ArrayList<Asteroide> asteroidesFuturo() {
+        ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
+        try {
+            LocalDate dataAtual = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String dataFormatada = dataAtual.format(formatter);
+            
+            System.out.println(dataFormatada);
+            String sql = "select * from asteroides where data_aproximacao_maxima > ? limit 20";
+            PreparedStatement st = conn.getConnection().prepareStatement(sql);
+            st.setString(1, dataFormatada);
+            ResultSet rs = st.executeQuery();
+            
+            while (rs.next()) {
+                Asteroide ast = new Asteroide(rs.getString("id"), rs.getString("nome"));
+                ast.setDate(LocalDate.parse(rs.getString("date")));
+                ast.setId(rs.getString("id")); // id
+                ast.setId_neo_referencia(rs.getString("id_neo_referencia"));
+                ast.setData_aproximacao_maxima(LocalDate.parse(rs.getString("data_aproximacao_maxima")));
+                ast.setVelocidade_relativa_em_kms(rs.getDouble("velocidade_relativa_em_kms")); // velocidade_relativa_em_kms
+                ast.setDistancia_min_da_terra_em_km(rs.getDouble("distancia_min_da_terra_em_km")); // distancia_min_da_terra_em_km
+                ast.setDiametro_estimado_em_km(rs.getDouble("diametro_estimado_em_km"));  // diametro_estimado_em_km
+                ast.setCorpo_orbitante(rs.getString("corpo_orbitante")); // corpo_orbitante
+                ast.setPotencialmente_perigoso(rs.getBoolean("potencialmente_perigoso")); // potencialmente_perigoso
+                ast.setNivel_ameaca(rs.getString("nivel_ameaca")); // nivel_ameaca
+
+                lstAsteroides.add(ast);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(AsteroideDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lstAsteroides;
+    }
 }

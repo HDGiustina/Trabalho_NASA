@@ -50,6 +50,10 @@ public class AsteroideController {
     public ArrayList<AsteroidesPorPeriodo> getNumeroAsteroidesProximosATerraPorMes(String periodo){
         return asteroidesDao.contadorDeAsteroidesProximosATerraPorPeriodo(periodo);
     }
+    
+    public ArrayList<Asteroide> getAteroidesFuturo(){
+        return asteroidesDao.asteroidesFuturo();
+    }
 
     // Função abaixo consulta todos os asteroides no período informado na API e os retorna como ArrayList<Asteroide>
     public ArrayList<Asteroide> consultarAsteroidesAPI(LocalDate dataInicio, LocalDate dataFinal) throws IOException, InterruptedException, SQLException {
