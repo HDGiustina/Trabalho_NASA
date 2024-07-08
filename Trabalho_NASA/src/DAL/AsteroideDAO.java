@@ -361,7 +361,7 @@ public class AsteroideDAO {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             String dataFormatada = dataAtual.format(formatter);
             
-            String sql = "select * from asteroides where data_aproximacao_maxima > ? limit 20";
+            String sql = "select * from asteroides where data_aproximacao_maxima > ? ORDER BY date ASC limit 20";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             st.setString(1, dataFormatada);
             ResultSet rs = st.executeQuery();

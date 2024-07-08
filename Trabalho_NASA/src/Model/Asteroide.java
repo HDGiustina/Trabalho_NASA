@@ -43,7 +43,7 @@ public class Asteroide {
         if (!potencPerigoso) {
             nivelAmeaca = "Nenhuma";
         } else {
-            if (diametro_estimado_em_km > diametreoAlto) {
+            if (diametro_estimado_em_km >= diametreoAlto) {
                 if (velocidade_relativa_em_kms >= velocidadeAlta) {
                     if (distancia_min_da_terra_em_km < distanciaMinimaModerada) {
                         nivelAmeaca = "Extrema";

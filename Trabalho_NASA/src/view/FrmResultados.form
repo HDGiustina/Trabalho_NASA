@@ -175,10 +175,10 @@
               <Table columnCount="8" rowCount="0">
                 <Column editable="false" title="Nome" type="java.lang.String"/>
                 <Column editable="false" title="Data de Aproxima&#xe7;&#xe3;o" type="java.lang.String"/>
-                <Column editable="false" title="Velocidade Relativa" type="java.lang.Double"/>
-                <Column editable="false" title="Dist&#xe2;ncia m&#xed;nima" type="java.lang.Double"/>
-                <Column editable="false" title="Di&#xe2;metro Estimado" type="java.lang.Double"/>
-                <Column editable="false" title="Corpo orbitante" type="java.lang.String"/>
+                <Column editable="false" title="Velocidade (km/s)" type="java.lang.Double"/>
+                <Column editable="false" title="Dist&#xe2;ncia M&#xed;n (km)" type="java.lang.Double"/>
+                <Column editable="false" title="Di&#xe2;metro (m)" type="java.lang.Double"/>
+                <Column editable="false" title="Corpo Orbitante" type="java.lang.String"/>
                 <Column editable="false" title="Perigoso" type="java.lang.String"/>
                 <Column editable="false" title="N&#xed;vel de Amea&#xe7;a" type="java.lang.String"/>
               </Table>

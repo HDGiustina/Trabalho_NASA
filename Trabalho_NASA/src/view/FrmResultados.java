@@ -34,7 +34,7 @@ public class FrmResultados extends javax.swing.JFrame {
         // pega as opções do combo box do Filtro
         optionsFiltros = filtrosController.getOpcoesDeFiltro();
         
-        // Adiciona a opção Tidis no combo box do filtro
+        // Adiciona a opção Todos no combo box do filtro
         optionsFiltros.addFirst(new OpcoesDeFitro("Todos", "Todos"));
         
         // Coloca o modelo de opções no combo box do filtro
@@ -95,7 +95,7 @@ public class FrmResultados extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Data de Aproximação", "Velocidade Relativa", "Distância mínima", "Diâmetro Estimado", "Corpo orbitante", "Perigoso", "Nível de Ameaça"
+                "Nome", "Data de Aproximação", "Velocidade (km/s)", "Distância Mín (km)", "Diâmetro (m)", "Corpo Orbitante", "Perigoso", "Nível de Ameaça"
             }
         ) {
             Class[] types = new Class [] {
@@ -397,8 +397,8 @@ public class FrmResultados extends javax.swing.JFrame {
             linha[1] = temp.getData_aproximacao_maxima().format(formatter);
             
             linha[2] = temp.getVelocidade_relativa_em_kms();
-            linha[3] = temp.getDistancia_min_da_terra_em_km();
-            linha[4] = temp.getDiametro_estimado_em_km();
+            linha[3] = Math.round(temp.getDistancia_min_da_terra_em_km());
+            linha[4] = ((double) Math.round(temp.getDiametro_estimado_em_km() * 1000 * 10)) / 10;  // Transforma em metros e arredonda para 1 casa decimal, apenas
             linha[5] = temp.getCorpo_orbitante();
             
             // Trocando o valor Booleano por uma string mais legivel 

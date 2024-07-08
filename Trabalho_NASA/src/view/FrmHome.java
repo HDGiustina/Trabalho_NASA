@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import java.text.NumberFormat;
 
 /**
  *
@@ -94,14 +95,16 @@ public class FrmHome extends javax.swing.JFrame {
         ArrayList<Asteroide> asteroides = controller.getAteroidesFuturo();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        
         for (Asteroide asteroide : asteroides) {
-            // Round the distance
-            long roundedDistance = Math.round(asteroide.getDistancia_min_da_terra_em_km());
+            // Arredonda e formata a distância
+            String formattedDistance = numberFormat.format(Math.round(asteroide.getDistancia_min_da_terra_em_km())) + " km";
 
             Object[] row = {
                 asteroide.getNome(),
                 asteroide.getData_aproximacao_maxima().format(formatter),
-                roundedDistance, // Rounded distance value
+                formattedDistance, // Rounded distance value
                 asteroide.getNivel_ameaca()
             };
             model.addRow(row);
@@ -196,9 +199,16 @@ public class FrmHome extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(ListaAproximacoes);
