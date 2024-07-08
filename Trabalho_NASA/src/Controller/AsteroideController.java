@@ -22,7 +22,6 @@ import java.time.LocalDate;
 
 
 public class AsteroideController {
-    private static final String API_KEY = "c7rNf6fd2psQW282XAHRMjSyhlUZtpkHWbHd5k1K";
     private static final String BASE_URL = "https://api.nasa.gov/neo/rest/v1/feed";
 
     private AsteroideDAO asteroidesDao = new AsteroideDAO();
@@ -62,12 +61,11 @@ public class AsteroideController {
     // Função abaixo consulta todos os asteroides no período informado na API e os retorna como ArrayList<Asteroide>
     public ArrayList<Asteroide> consultarAsteroidesAPI(LocalDate dataInicio, LocalDate dataFinal) throws IOException, InterruptedException, SQLException {
         ArrayList<Asteroide> lstAsteroides = new ArrayList<>();
-        /*  
-            //verificar se as datas passadas nao sao de 7 dias atras e etc
-             //fazer funcao para chamar dados da api e 
-            cadastrar os asteroides com o asteroide DAO de cadastrarAsteroide
-            fazendo um foreach e passando models de Asteroide
-         */
+        
+        // Conulta a API_KEY no banco de dados
+        ConfiguracoesController config = new ConfiguracoesController();
+        String api_key = config.consultarApiKey();
+        System.out.println(api_key);
         
         // Cria cliente para executar consulta(s) na API
         HttpClient client = HttpClient.newHttpClient();
@@ -77,7 +75,7 @@ public class AsteroideController {
 
             // Monta a string de consulta e a executa
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "?start_date=" + data_pesquisa + "&end_date=" + data_pesquisa.plusDays(7) + "&api_key=" + API_KEY))
+                    .uri(URI.create(BASE_URL + "?start_date=" + data_pesquisa + "&end_date=" + data_pesquisa.plusDays(7) + "&api_key=" + api_key))
                     .build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

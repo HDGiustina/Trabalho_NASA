@@ -18,13 +18,18 @@ public class ConfiguracoesController {
      * @throws Exception 
      * funcao que atualizara os dados de configuracoes disponiveis
      */
-    public void updateConfiguracoes(Configuracoes configuracoes) throws Exception{
-        if(configuracoes.getPeriodo_grafico().isEmpty())throw  new Exception("Informe a periodo desejado, por favor");
+    public void updateConfiguracoes(Configuracoes configuracoes) throws Exception {
+        if(configuracoes.getPeriodo_grafico().isEmpty()) throw new Exception("Informe a periodo desejado, por favor");
         config.updateConfiguracoes(configuracoes);
     }
     
     public String consultarPeridoDoGrafico(){
         String periodo = config.consultarPeridoDoGrafico();
         return periodo;
+    }
+    
+    public String consultarApiKey(){
+        String api_key = config.consultarApiKey();
+        return api_key;
     }
 }

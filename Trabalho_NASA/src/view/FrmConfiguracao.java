@@ -6,6 +6,8 @@ package view;
 
 import Controller.*; 
 import Model.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -43,6 +45,12 @@ public class FrmConfiguracao extends javax.swing.JFrame {
                 break;
         }
         
+        // Preenche a API Key com a Key que está no banco
+        config.setApiKey(controller.consultarApiKey());
+        controller.consultarPeridoDoGrafico();
+        txtAPI_KEY.setText(config.getApiKey());
+        
+        
         
     }
 
@@ -60,6 +68,8 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         AtualizaButton = new javax.swing.JButton();
         periodoGrafico = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        txtAPI_KEY = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuDashboard = new javax.swing.JMenuItem();
@@ -93,6 +103,8 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         });
 
         periodoGrafico.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mês", "Ano", "Dia" }));
+
+        jLabel2.setText("Chave de Consulta à API da Nasa:");
 
         menuArquivo.setText("Arquivo");
 
@@ -170,10 +182,13 @@ public class FrmConfiguracao extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(AtualizaButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(periodoGrafico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(periodoGrafico, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtAPI_KEY))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -187,7 +202,11 @@ public class FrmConfiguracao extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(periodoGrafico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                .addGap(43, 43, 43)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtAPI_KEY, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addComponent(AtualizaButton)
                 .addContainerGap())
         );
@@ -229,6 +248,9 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         } else if(periodoGrafico.getSelectedItem().equals("Dia")){
             config.setPeriodo_grafico("dia");
         }
+        
+        // Seta a API KEY conforme informado no JTextField
+        config.setApiKey(txtAPI_KEY.getText());
         
         try {
             // Atualiza a configurações do peridodo no banco de dados
@@ -294,6 +316,7 @@ public class FrmConfiguracao extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AtualizaButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
@@ -308,5 +331,6 @@ public class FrmConfiguracao extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenuItem menuSobre;
     private javax.swing.JComboBox<String> periodoGrafico;
+    private javax.swing.JTextField txtAPI_KEY;
     // End of variables declaration//GEN-END:variables
 }
