@@ -326,7 +326,6 @@ public class AsteroideDAO {
                     + "ORDER BY \n"
                     + "    periodo;";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
-            System.out.println(formato);
             st.setString(1, formato);
             st.setString(2, formato);
             st.setString(3, formato);
@@ -340,7 +339,6 @@ public class AsteroideDAO {
                         rs.getString("periodo"),
                         rs.getInt("total_itens")
                 );
-                System.out.println(ateroidesPorPeriodo);
 
                 asteroidesPorPeriodo.add(ateroidesPorPeriodo);
             }
@@ -363,7 +361,6 @@ public class AsteroideDAO {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             String dataFormatada = dataAtual.format(formatter);
             
-            System.out.println(dataFormatada);
             String sql = "select * from asteroides where data_aproximacao_maxima > ? limit 20";
             PreparedStatement st = conn.getConnection().prepareStatement(sql);
             st.setString(1, dataFormatada);

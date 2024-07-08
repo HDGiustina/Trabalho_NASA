@@ -73,6 +73,7 @@ public class FrmConfiguracao extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Nasa dos pampas");
         setBounds(new java.awt.Rectangle(480, 200, 0, 0));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N

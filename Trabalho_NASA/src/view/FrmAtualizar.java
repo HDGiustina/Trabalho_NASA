@@ -67,6 +67,7 @@ public class FrmAtualizar extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Nasa dos pampas");
         setBounds(new java.awt.Rectangle(350, 200, 0, 0));
         setMinimumSize(new java.awt.Dimension(600, 350));
 

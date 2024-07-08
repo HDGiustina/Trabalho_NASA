@@ -85,6 +85,7 @@ public class FrmResultados extends javax.swing.JFrame {
         menuSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Nasa dos pampas");
         setBounds(new java.awt.Rectangle(200, 150, 0, 0));
         setMinimumSize(new java.awt.Dimension(1000, 500));
 

@@ -25,7 +25,6 @@ public class ConfiguracoesDAL {
     public void updateConfiguracoes(Configuracoes configuracoes){
         conn = new BdConexao();
         try {
-            System.out.println(configuracoes.getPeriodo_grafico());
             String sql = "UPDATE configuracoes SET periodo_grafico = ? WHERE id = 1";
             PreparedStatement psmt = conn.getConnection().prepareStatement(sql);
             psmt.setString(1, configuracoes.getPeriodo_grafico());
