@@ -19,13 +19,29 @@ public class FrmResultados extends javax.swing.JFrame {
     private final MenuController menu;
     private final AsteroideController controller = new AsteroideController();
     private final OpcoesOrdenacaoController optionsController = new OpcoesOrdenacaoController();
+    private final OpcoesDeFitroController filtrosController = new OpcoesDeFitroController();
+    private final UtilsController utilCOntroller = new UtilsController();
+    
     private final ArrayList<OpcoesOrdenacao> options = optionsController.getOpcoesDeOrdenacao();
     private final DefaultComboBoxModel modelOrdenacao = new DefaultComboBoxModel<>(options.toArray(new OpcoesOrdenacao[0]));
+    
+    private final ArrayList<OpcoesDeFitro> optionsFiltros;
+    private final DefaultComboBoxModel modelFiltros;
     /**
      * Creates new form FrmResultados
      */
     public FrmResultados() {
+        // pega as opções do combo box do Filtro
+        optionsFiltros = filtrosController.getOpcoesDeFiltro();
+        
+        // Adiciona a opção Tidis no combo box do filtro
+        optionsFiltros.addFirst(new OpcoesDeFitro("Todos", "Todos"));
+        
+        // Coloca o modelo de opções no combo box do filtro
+        modelFiltros = new DefaultComboBoxModel<>(optionsFiltros.toArray(new OpcoesDeFitro[0]));
+        
         initComponents();
+        // Controller do menu
         menu = new MenuController(this);
 
         // Pegando lista de asteroides já ordenada
@@ -33,6 +49,9 @@ public class FrmResultados extends javax.swing.JFrame {
         
         // Caregando a tabela
         carregaTable(asteroidesOrdenado);
+        
+        // Esconde o combo box dos campos do filtro para aparecer só quando selecionar o filtro
+        panelFiltroValor.setVisible(false);
     }
 
     /**
@@ -48,8 +67,11 @@ public class FrmResultados extends javax.swing.JFrame {
         tableResultados = new javax.swing.JTable();
         ordenacaoInput = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        campoFiltro = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        panelFiltroValor = new javax.swing.JPanel();
+        valorFiltro = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuArquivo = new javax.swing.JMenu();
         menuDashboard = new javax.swing.JMenuItem();
@@ -103,10 +125,44 @@ public class FrmResultados extends javax.swing.JFrame {
 
         jLabel1.setText("Ordenar:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        campoFiltro.setModel(this.modelFiltros);
+        campoFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoFiltroActionPerformed(evt);
+            }
+        });
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Filtros:");
+        jLabel2.setText("Filtrar pelo campo:");
+
+        valorFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                valorFiltroActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Filtrar pelo valor:");
+
+        javax.swing.GroupLayout panelFiltroValorLayout = new javax.swing.GroupLayout(panelFiltroValor);
+        panelFiltroValor.setLayout(panelFiltroValorLayout);
+        panelFiltroValorLayout.setHorizontalGroup(
+            panelFiltroValorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFiltroValorLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelFiltroValorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(valorFiltro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        panelFiltroValorLayout.setVerticalGroup(
+            panelFiltroValorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFiltroValorLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(valorFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         menuArquivo.setText("Arquivo");
 
@@ -181,30 +237,35 @@ public class FrmResultados extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 922, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ordenacaoInput, 0, 233, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelFiltroValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, 245, Short.MAX_VALUE))))
+                            .addComponent(campoFiltro, 0, 245, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(12, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ordenacaoInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(panelFiltroValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ordenacaoInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -236,19 +297,95 @@ public class FrmResultados extends javax.swing.JFrame {
     }//GEN-LAST:event_menuSobreActionPerformed
 
     private void ordenacaoInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordenacaoInputActionPerformed
+        OpcoesDeFitro filtro = (OpcoesDeFitro) campoFiltro.getSelectedItem();
         
-        // Pegando lista de asteroides ordenada conforme o objeto selecionado no combo box
-        OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
-        ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesOrdenacao(selectedOption.getOrdenacao());
+        // Verifica se tem algum filtro selecionado para ordendar com filtro ou só ordenar
+        if(valorFiltro.getSelectedItem() != null && !filtro.getTextoNome().equals("Todos") && valorFiltro.getSelectedItem().equals("-- Selecione --")){
+            this.filtraTabela();
+        } else {
+            // Pegando lista de asteroides ordenada conforme o objeto selecionado no combo box
+            OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
+            ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesOrdenacao(selectedOption.getOrdenacao());
+
+            // Caregando a tabela
+            carregaTable(asteroidesOrdenado);
+        }
         
-        // Caregando a tabela
-        carregaTable(asteroidesOrdenado);
+        
     }//GEN-LAST:event_ordenacaoInputActionPerformed
+
+    private void valorFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorFiltroActionPerformed
+        this.filtraTabela();
+    }//GEN-LAST:event_valorFiltroActionPerformed
+
+    private void campoFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoFiltroActionPerformed
+        OpcoesDeFitro filtro = (OpcoesDeFitro) campoFiltro.getSelectedItem();
+
+        if(filtro.getTextoNome().equals("Todos")){
+            // Esconde o combo box dos campos de filtro
+            panelFiltroValor.setVisible(false);
+            
+            // Pegando lista de asteroides ordenada conforme o objeto selecionado no combo box de ordenação
+            OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
+            ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesOrdenacao(selectedOption.getOrdenacao());
+
+            // Caregando a tabela
+            carregaTable(asteroidesOrdenado);
+        } else {
+            // Mostra o combo box dos campos de filtro
+            panelFiltroValor.setVisible(true);
+            
+            // Verifica se o filtro selecionado é os que vem como string direto ou vem com os indices mínimos e máximos
+            if(filtro.getColuna().equals("nivel_ameaca") || filtro.getColuna().equals("potencialmente_perigoso")){
+                // Pega os campos conforme o filtro selecionado
+                ArrayList<String> campos = utilCOntroller.getFiltrosColuna(filtro.getColuna());
+                
+                // Adiciona a primeira opção como placeholder
+                campos.addFirst("-- Selecione --");
+                
+                // Troca o 0 e 1 do perigo para Sim e Não
+                if(filtro.getColuna().equals("potencialmente_perigoso")){
+                    for (int i = 0; i < campos.size(); i++) {
+                        if(campos.get(i).equals("0")){
+                            campos.set(i, "Não");
+                        } else if(campos.get(i).equals("1")){
+                            campos.set(i, "Sim");
+                        } 
+                    }
+                }
+
+                // Seta o modelo do combo box
+                DefaultComboBoxModel modelFiltroCampo = new DefaultComboBoxModel<>(campos.toArray());
+                valorFiltro.setModel(modelFiltroCampo);
+            } else {
+                // Pega os campos conforme o filtro selecionado
+                ArrayList<Utils> campos = utilCOntroller.getFiltrosColunaDouble(filtro.getColuna());
+                // Adiciona a primeira opção como placeholder do tipo dos campos
+                campos.addFirst(new Utils("-- Selecione --", (double) 0,  (double) 0));
+
+                // Seta o texto que aparecerá no combo box
+                campos.get(0).setTexto("-- Selecione --");
+                
+                // Seta o texto que aparecerá no combo box, juntando os valores minimos e máximos
+                for (int i = 0; i < campos.size(); i++) {
+                    if(i != 0){
+                        campos.get(i).setTexto(campos.get(i).getMin() + " até " + campos.get(i).getMax());
+                    }
+                }
+                
+                // Seta o modelo do combo box
+                DefaultComboBoxModel modelFiltroCampo = new DefaultComboBoxModel<>(campos.toArray(new Utils[0]));
+                valorFiltro.setModel(modelFiltroCampo);
+            }
+        }
+    }//GEN-LAST:event_campoFiltroActionPerformed
 
     
     private void carregaTable(ArrayList<Asteroide> asteroides) {
+        // Pega o modelo da tabela
         DefaultTableModel tbl = (DefaultTableModel) tableResultados.getModel();
         tbl.setRowCount(0);
+        
         for (int i = 0; i < asteroides.size(); i++) {
             Object[] linha = new Object[8];
             Asteroide temp = asteroides.get(i);
@@ -271,6 +408,43 @@ public class FrmResultados extends javax.swing.JFrame {
         }
 
     }
+    
+    private void filtraTabela(){
+        // Pega o filtro selecionado
+        OpcoesDeFitro filtro = (OpcoesDeFitro) campoFiltro.getSelectedItem();
+        
+        // verifica o tipo de filtro seleciona para ver se é somente a string de valor ou os valores minimos e maximos
+        if(filtro.getColuna().equals("nivel_ameaca") || filtro.getColuna().equals("potencialmente_perigoso")){
+            String campo = (String) valorFiltro.getSelectedItem();
+            
+            // Troca os campos do potencialmente_perigoso de strings para 0 e 1
+            if(campo.equals("Não")){
+                campo = "0";
+            } else  if(campo.equals("Sim")) {
+                campo = "1";
+            }
+            
+            // Pega a ordenação para mandar junto
+            OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
+            
+            // Pega a lista de asteroides ordenada e filtrada
+            ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesFiltroEOrdenacao(selectedOption.getOrdenacao(), filtro.getColuna(), campo);
+
+            // Caregando a tabela
+            carregaTable(asteroidesOrdenado);
+        } else {
+            Utils campo = (Utils) valorFiltro.getSelectedItem();
+            
+            // Pega a ordenação para mandar junto
+            OpcoesOrdenacao selectedOption = (OpcoesOrdenacao) ordenacaoInput.getSelectedItem();
+            
+            // Pega a lista de asteroides ordenada e filtrada
+            ArrayList<Asteroide> asteroidesOrdenado = controller.getAsteroidesFiltroEOrdenacao(selectedOption.getOrdenacao(), filtro.getColuna(), campo.getMin(), campo.getMax());
+
+            // Caregando a tabela
+            carregaTable(asteroidesOrdenado);
+        }
+    } 
     /**
      * @param args the command line arguments
      */
@@ -307,9 +481,10 @@ public class FrmResultados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> campoFiltro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenu menuAjuda;
@@ -323,6 +498,8 @@ public class FrmResultados extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenuItem menuSobre;
     private javax.swing.JComboBox<String> ordenacaoInput;
+    private javax.swing.JPanel panelFiltroValor;
     private javax.swing.JTable tableResultados;
+    private javax.swing.JComboBox<String> valorFiltro;
     // End of variables declaration//GEN-END:variables
 }

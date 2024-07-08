@@ -32,6 +32,11 @@ public class OpcoesDeFitro {
     public void setTextoNome(String textoNome) {
         this.textoNome = textoNome;
     }
+
+    @Override
+    public String toString() {
+        return textoNome;
+    }
     
     
 }

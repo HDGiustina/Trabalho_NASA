@@ -10,10 +10,11 @@ package Model;
  */
 public class Utils {
     private String coluna;
-    private Long max;
-    private Long min;
+    private Double max;
+    private Double min;
+    private String texto;
 
-    public Utils(String coluna, Long max, Long min) {
+    public Utils(String coluna, Double max, Double min) {
         this.coluna = coluna;
         this.max = max;
         this.min = min;
@@ -27,23 +28,33 @@ public class Utils {
         this.coluna = coluna;
     }
 
-    public Long getMax() {
+    public Double getMax() {
         return max;
     }
 
-    public void setMax(Long max) {
+    public void setMax(Double max) {
         this.max = max;
     }
 
-    public Long getMin() {
+    public Double getMin() {
         return min;
     }
 
-    public void setMin(Long min) {
+    public void setMin(Double min) {
         this.min = min;
     }
 
-    
-    
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+    }
+
+    @Override
+    public String toString() {
+        return texto;
+    }
     
 }

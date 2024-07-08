@@ -71,7 +71,7 @@ public class UtilsDAO {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                Utils util = new Utils(rs.getString("parte"), rs.getLong("min"), rs.getLong("max"));
+                Utils util = new Utils(rs.getString("parte"), rs.getDouble("max"), rs.getDouble("min"));
                 niveis.add(util);
             }
         } catch (SQLException ex) {
