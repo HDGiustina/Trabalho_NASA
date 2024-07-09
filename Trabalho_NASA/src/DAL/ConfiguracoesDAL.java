@@ -44,6 +44,10 @@ public class ConfiguracoesDAL {
         }
     }
     
+    /**
+     * 
+     * @return1 periodo que está send utilizado no grafico 
+     */
     public String consultarPeridoDoGrafico() {
         conn = new BdConexao();
         String periodo = "";
@@ -79,6 +83,10 @@ public class ConfiguracoesDAL {
         }
     }
         
+    /**
+     * 
+     * @return consuta a chave da api sendo utilizada  
+     */
     public String consultarApiKey() {
         conn = new BdConexao();
         String api_key = "";

@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class OpcoesDeFitroDAO {
     private BdConexao conn;
 
-    public ArrayList<OpcoesDeFitro> consultarTodasOrdenacoesPossiveis() {
+    public ArrayList<OpcoesDeFitro> consultarTodosFiltros() {
         conn = new BdConexao();
         ArrayList<OpcoesDeFitro> opcoesDeFitro = new ArrayList<>();
 

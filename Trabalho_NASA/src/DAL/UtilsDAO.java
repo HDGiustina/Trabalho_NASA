@@ -20,7 +20,13 @@ import Model.Utils;
 public class UtilsDAO {
 
     private final BdConexao conn = new BdConexao();
-
+    
+    /**
+     * 
+     * @param coluna
+     * @return os filtros das colunas, as colunas de string ex: nivel de perigo
+     * que são baixo médio alto
+     */
     public ArrayList<String> getFiltrosColuna(String coluna) {
         ArrayList<String> niveisDeAmeaça = new ArrayList<>();
         try {
@@ -38,7 +44,13 @@ public class UtilsDAO {
         }
         return niveisDeAmeaça;
     }
-
+    
+    /**
+     * 
+     * @param coluna coluna no qual deseja os filtros
+     * @return os filtros refenrete a coluna double que deseja ex: velocidade maxima 
+     * retorna um range de velocidades
+     */
     public ArrayList<Utils> getFiltrosColunaDouble(String coluna) {
         ArrayList<Utils> niveis = new ArrayList<>();
         try {

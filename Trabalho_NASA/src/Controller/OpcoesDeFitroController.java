@@ -15,6 +15,6 @@ import java.util.ArrayList;
 public class OpcoesDeFitroController {
     private OpcoesDeFitroDAO opcoesDeFitroDAO = new OpcoesDeFitroDAO();
     public ArrayList<OpcoesDeFitro> getOpcoesDeFiltro(){
-        return opcoesDeFitroDAO.consultarTodasOrdenacoesPossiveis();
+        return opcoesDeFitroDAO.consultarTodosFiltros();
     }
 }

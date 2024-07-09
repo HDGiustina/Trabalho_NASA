@@ -20,7 +20,11 @@ import java.util.logging.Logger;
 public class OpcoesOrdenacaoDAO {
 
     private BdConexao conn;
-
+    
+    /**
+     * 
+     * @return todas as opcooes de ordenações do banc 
+     */
     public ArrayList<OpcoesOrdenacao> consultarTodasOrdenacoesPossiveis() {
         conn = new BdConexao();
         ArrayList<OpcoesOrdenacao> lstDeOpcoes = new ArrayList<>();
